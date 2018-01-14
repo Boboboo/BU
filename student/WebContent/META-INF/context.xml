@@ -1,0 +1,10 @@
+<Context>
+  <Resource name="jdbc/student" 
+  			auth="Container" type="javax.sql.DataSource"
+            maxActive="20" maxIdle="5" maxWait="10000"
+            username="postgres" password="722722" 
+            driverClassName="org.postgresql.Driver"
+            url="jdbc:postgresql://localhost/postgres"/>
+</Context>
+
+
