@@ -1,0 +1,24 @@
+<web-app >
+
+  <display-name>Welcome to Tomcat</display-name>
+  <description>
+     Welcome to Tomcat
+  </description>
+  
+  
+  <!-- servlet mapping start -->
+  <servlet>
+  		<!-- name servlet  -->
+        <servlet-name>HelloWorld</servlet-name>
+        <!-- package name + class name -->
+        <servlet-class>com.bobo.HelloWorld</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+   		<servlet-name>HelloWorld</servlet-name>
+  		<url-pattern>/sp</url-pattern>
+  </servlet-mapping>
+  <!-- servlet mapping end -->
+
+
+</web-app>
