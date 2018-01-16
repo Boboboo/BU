@@ -1,4 +1,4 @@
-package com.bobo;
+package com.bobo.testServlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
