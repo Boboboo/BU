@@ -1,0 +1,9 @@
+CREATE TABLE links(
+   id               serial  PRIMARY KEY     NOT NULL,
+   pvalue           float ,                 
+   source           text, 
+   source_cond      text,
+   target           text,
+   target_cond      text,
+   weight           float
+);

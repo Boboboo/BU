@@ -1,0 +1,8 @@
+CREATE TABLE nodes(
+   taxid            varchar  PRIMARY KEY     NOT NULL,
+   childern         text[],                 
+   lineage          text, 
+   name             text,
+   taxlevel         text
+   
+);
