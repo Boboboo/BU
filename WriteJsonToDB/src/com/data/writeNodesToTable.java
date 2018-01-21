@@ -3,6 +3,7 @@ package com.data;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Arrays;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -21,17 +22,14 @@ public class writeNodesToTable {
 		         .buildSessionFactory();
 
 		 Session session=factory.getCurrentSession();
-
 		 session.beginTransaction();
 		  
 		 JSONParser parser = new JSONParser();
 		
-         try {     
-        	
+         try {    
              JSONArray data = (JSONArray) parser.parse(new FileReader("/Users/air/Desktop/nodes.json"));
  
              for (Object o : data){
-            	
 				  JSONObject node = (JSONObject) o;
 				  
 				  String taxid = (String) node.get("taxid");
@@ -39,12 +37,12 @@ public class writeNodesToTable {
    			      String name = (String) node.get("name");
    			      String taxlevel = (String) node.get("taxlevel");
    			      String id = (String) node.get("id");
-   			     // String[] children=(String[]) node.get("children");
-		         
+   			      JSONArray list=(JSONArray) node.get("children");
+		          String children=JSONArraytoArray(list);
 			      //System.out.println(children);
-			    
-			     // Node theNode = new Node(taxid, children,lineage, name, taxlevel,id);
-			      Node theNode = new Node(taxid, lineage, name, taxlevel,id);
+
+			      Node theNode = new Node(taxid,children,lineage, name, taxlevel,id);
+			      
 				  session.save(theNode);
              }
             
@@ -60,5 +58,16 @@ public class writeNodesToTable {
 			factory.close();
 			//session.close();
 		}  
+	}
+
+	private static String JSONArraytoArray(JSONArray jsonArray) {
+		String[] array = new String[jsonArray.size()];
+		if (jsonArray != null) { 
+		   int len = jsonArray.size();
+		   for (int i=0;i<len;i++){ 
+			   array[i]=jsonArray.get(i).toString();
+		   } 
+		}
+		return Arrays.toString(array);
 	}
 }

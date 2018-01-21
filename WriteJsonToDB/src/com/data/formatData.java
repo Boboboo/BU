@@ -6,7 +6,7 @@ import org.json.simple.JSONArray;
 
 public class formatData {
 	
-	public static String[] toArray(JSONArray jsonArray) {
+	public static String[] JSONArraytoArray(JSONArray jsonArray) {
 		String[] array = new String[jsonArray.size()];
 		if (jsonArray != null) { 
 		   int len = jsonArray.size();

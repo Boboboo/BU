@@ -1,5 +1,6 @@
 package com.data;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,17 +17,15 @@ public class Node {
 	
 	private String taxid;
 	
-	//private String[] children;
+	@Column(length=3000)
+	private String children;
 
 	private String lineage;
 	
-
 	private String name;
 	
-
 	private String taxlevel;
 	
-
 	private String id;
 
 	public Node() {
@@ -42,15 +41,15 @@ public class Node {
 		this.id = id;
 	}
 
-//	public Node(String taxid,  String[] children, String lineage, String name, String taxlevel, String id) {
-//		super();
-//		this.taxid = taxid;
-//		this.children = children;
-//		this.lineage = lineage;
-//		this.name = name;
-//		this.taxlevel = taxlevel;
-//		this.id = id;
-//	}
+	public Node(String taxid,  String children, String lineage, String name, String taxlevel, String id) {
+		super();
+		this.taxid = taxid;
+		this.children = children;
+		this.lineage = lineage;
+		this.name = name;
+		this.taxlevel = taxlevel;
+		this.id = id;
+	}
 	
 	public String getTaxid() {
 		return taxid;
@@ -58,12 +57,12 @@ public class Node {
 	public void setTaxid(String taxid) {
 		this.taxid = taxid;
 	}
-//	public String[] getChildren() {
-//		return children;
-//	}
-//	public void setChildren(String[] children) {
-//		this.children = children;
-//	}
+	public String getChildren() {
+		return children;
+	}
+	public void setChildren(String children) {
+		this.children = children;
+	}
 	public String getLineage() {
 		return lineage;
 	}
@@ -88,11 +87,11 @@ public class Node {
 	public void setId(String id) {
 		this.id = id;
 	}
-//	@Override
-//	public String toString() {
-//		return "Node [taxid=" + taxid + ", children=" + children + ", lineage=" + lineage + ", name=" + name
-//				+ ", taxlevel=" + taxlevel + ", id=" + id + "]";
-//	}
+	@Override
+	public String toString() {
+		return "Node [taxid=" + taxid + ", children=" + children + ", lineage=" + lineage + ", name=" + name
+				+ ", taxlevel=" + taxlevel + ", id=" + id + "]";
+	}
 	
 }
 
