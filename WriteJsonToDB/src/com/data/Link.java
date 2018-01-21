@@ -10,7 +10,7 @@ import javax.persistence.Table;
 @Table(name="links")
 public class Link {
 	@Id 
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 	
 	private Double pvalue;
@@ -20,6 +20,16 @@ public class Link {
 	private String target_cond;
 	private Double weight;
 	
+	public Link(Double pvalue, String source, String source_cond, String target, String target_cond, Double weight) {
+		super();
+		this.pvalue = pvalue;
+		this.source = source;
+		this.source_cond = source_cond;
+		this.target = target;
+		this.target_cond = target_cond;
+		this.weight = weight;
+	}
+
 	public Link(int id, Double pvalue, String source, String source_cond, String target, String target_cond,
 			Double weight) {
 		super();

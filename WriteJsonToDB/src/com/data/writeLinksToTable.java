@@ -15,19 +15,18 @@ import org.json.simple.parser.ParseException;
 
 public class writeLinksToTable {
 	public static void main(String[] args) {
-		
+		//public void main() {
 		 SessionFactory factory=new Configuration()
 				 .configure("hibernate.cfg.xml")
 		         .addAnnotatedClass(Link.class)
 		         .buildSessionFactory();
 
 		 Session session=factory.getCurrentSession();
-
 		 session.beginTransaction();
 		  
-		JSONParser parser = new JSONParser();
+		 JSONParser parser = new JSONParser();
 		
-        try {     
+         try {     
         	
             JSONArray data = (JSONArray) parser.parse(new FileReader("/Users/air/Desktop/links.json"));
 
@@ -43,25 +42,25 @@ public class writeLinksToTable {
 		          //System.out.println(pvalue+","+source+","+source_cond+","+target+","+target_cond+","+weight+",");
 				  
 			     System.out.println("Creating a new link object");
-			    
+			     
 			     int count=0;
 			    
-			     Link theLink = new Link(count++, pvalue, source, source_cond,target,target_cond,weight);
+			     Link theLink = new Link(pvalue, source, source_cond,target,target_cond,weight);
 				
 				 session.save(theLink);
-            }
+             }
             
-            session.getTransaction().commit();
+             session.getTransaction().commit();
             
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }  catch (Exception e) {
+         } catch (FileNotFoundException e) {
+             e.printStackTrace();
+         } catch (IOException e) {
+             e.printStackTrace();
+         } catch (ParseException e) {
+             e.printStackTrace();
+         }  catch (Exception e) {
 			factory.close();
 			//session.close();
-		}  
+		 }  
 	}
 }
