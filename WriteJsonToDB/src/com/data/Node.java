@@ -17,7 +17,7 @@ public class Node {
 	
 	private String taxid;
 	
-	@Column(length=3000)
+	@Column(length=2500)
 	private String children;
 
 	private String lineage;

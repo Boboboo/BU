@@ -1,5 +1,6 @@
 package com.data;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -10,14 +11,26 @@ import javax.persistence.Table;
 @Table(name="links")
 public class Link {
 	@Id 
+	@Column(name ="id")
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 	
+	@Column(name = "pvalue")
 	private Double pvalue;
+	
+	@Column(name = "source")
 	private String source;
+	
+	@Column(name = "source_cond")
 	private String source_cond;
+	
+	@Column(name = "target")
 	private String target;
+	
+	@Column(name = "target_cond")
 	private String target_cond;
+	
+	@Column(name = "weight")
 	private Double weight;
 	
 	public Link(Double pvalue, String source, String source_cond, String target, String target_cond, Double weight) {
@@ -50,7 +63,7 @@ public class Link {
 		this.id = id;
 	}
 
-	public double getPvalue() {
+	public Double getPvalue() {
 		return pvalue;
 	}
 	public void setPvalue(Double pvalue) {

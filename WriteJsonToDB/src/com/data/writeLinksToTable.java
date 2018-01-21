@@ -3,6 +3,7 @@ package com.data;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -13,9 +14,9 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 
-public class writeLinksToTable {
+public class WriteLinksToTable {
 	public static void main(String[] args) {
-		//public void main() {
+		
 		 SessionFactory factory=new Configuration()
 				 .configure("hibernate.cfg.xml")
 		         .addAnnotatedClass(Link.class)
@@ -31,7 +32,6 @@ public class writeLinksToTable {
             JSONArray data = (JSONArray) parser.parse(new FileReader("/Users/air/Desktop/links.json"));
 
             for (Object o : data){
-            	
 				  JSONObject link = (JSONObject) o;
 				  Double pvalue = (Double) link.get("pvalue");
 				  String source = (String) link.get("source");
@@ -41,17 +41,16 @@ public class writeLinksToTable {
 				  Double weight = (Double) link.get("weight");
 		          //System.out.println(pvalue+","+source+","+source_cond+","+target+","+target_cond+","+weight+",");
 				  
-			     System.out.println("Creating a new link object");
-			     
-			     int count=0;
+			      System.out.println("Creating a new link object");
 			    
-			     Link theLink = new Link(pvalue, source, source_cond,target,target_cond,weight);
+			      Link theLink = new Link(pvalue, source, source_cond,target,target_cond,weight);
 				
-				 session.save(theLink);
+				  session.save(theLink);
              }
             
              session.getTransaction().commit();
-            
+             session.close();
+             
          } catch (FileNotFoundException e) {
              e.printStackTrace();
          } catch (IOException e) {
@@ -61,6 +60,42 @@ public class writeLinksToTable {
          }  catch (Exception e) {
 			factory.close();
 			//session.close();
-		 }  
+		}  
+         
+         
+         
+        try {   
+        	 		session=factory.getCurrentSession();
+				session.beginTransaction();
+				
+				//from Link, should write the name of class, not the name of table
+				String hql="from Link";
+				List<Link> links = session.createQuery(hql).getResultList();
+				
+				System.out.println("#001");
+				
+			
+//				for(Link theOne:links) {
+//					int id=theOne.getId();
+//					Double pvalue=theOne.getPvalue();
+//					String source=theOne.getSource();
+//					String source_cond=theOne.getSource_cond();
+//					String target=theOne.getSource_cond();
+//					String target_cond=theOne.getTarget_cond();
+//					Double weight=theOne.getWeight();
+//					Link link=new Link(id, pvalue, source, source_cond, target, target_cond, weight);
+//				
+//					System.out.println(link);
+//				}
+				
+				
+				session.getTransaction().commit();
+				 
+				System.out.println("Done!");
+            
+          }  catch (Exception e) {
+        	  		factory.close();
+        	  		//session.close();
+ 		 }  
 	}
 }
