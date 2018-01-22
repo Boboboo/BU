@@ -1,0 +1,10 @@
+UPDATE links
+SET source = nodes.taxid
+FROM nodes
+WHERE links.source = nodes.id;
+
+
+UPDATE links
+SET target = nodes.taxid
+FROM nodes
+WHERE links.target = nodes.id
