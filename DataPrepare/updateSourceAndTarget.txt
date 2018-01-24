@@ -8,3 +8,15 @@ UPDATE links
 SET target = nodes.taxid
 FROM nodes
 WHERE links.target = nodes.id
+
+
+
+select * 
+from links 
+where source in 
+(select taxid from nodes where name='Streptococcaceae')
+or 
+target in 
+(select taxid from nodes where name='Streptococcaceae');
+
+
