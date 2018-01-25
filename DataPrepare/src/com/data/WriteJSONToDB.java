@@ -29,7 +29,7 @@ public class WriteJSONToDB {
 		 JSONParser parser = new JSONParser();
 		
          try {    
-             JSONArray data = (JSONArray) parser.parse(new FileReader("/Users/air/Desktop/nodes.json"));
+             JSONArray data = (JSONArray) parser.parse(new FileReader("/Users/air/Desktop/updatedNodes.json"));
  
              for (Object o : data){
 				  JSONObject node = (JSONObject) o;
