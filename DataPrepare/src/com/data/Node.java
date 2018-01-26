@@ -11,10 +11,8 @@ import javax.persistence.Table;
 @Table(name="nodes")
 public class Node {
 	
-	@Id 
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int dummyId;
 	
+	@Id 
 	private String taxid;
 	
 	@Column(length=2500)
@@ -31,16 +29,7 @@ public class Node {
 	public Node() {
 		super();
 	}
-	
-	public Node(int dummyId, String taxid, String children, String lineage, String name, String taxlevel) {
-		super();
-		this.dummyId = dummyId;
-		this.taxid = taxid;
-		this.children = children;
-		this.lineage = lineage;
-		this.name = name;
-		this.taxlevel = taxlevel;
-	}
+
 
 	public Node(String taxid, String lineage, String name, String taxlevel, String id) {
 		super();

@@ -49,13 +49,12 @@ public class ReadDataFromDB {
 	         stmt = con.createStatement();
 	         rs = stmt.executeQuery("SELECT * FROM nodes");
 	         while (rs.next()) {
-		            int dummyId = rs.getInt("dummyId");
 		            String taxid = rs.getString("taxid");
 		            String taxlevel = rs.getString("taxlevel");
 		            String name=rs.getString("name");
 		            String lineage=rs.getString("lineage");
 		            String children=rs.getString("children");
-		            Node theNode=new Node(dummyId, taxid, children, lineage, name, taxlevel);
+		            Node theNode=new Node(taxid, children, lineage, name, taxlevel);
 		            String jsonObject=gson.toJson(theNode);
 		            System.out.println(jsonObject);
 	         }
