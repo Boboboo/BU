@@ -1,13 +1,44 @@
-UPDATE links
+//update values for source and target in table temp_links
+UPDATE temp_links
 SET source = nodes.taxid
 FROM nodes
-WHERE links.source = nodes.id;
+WHERE temp_links.source = nodes.id;
 
-
-UPDATE links
+UPDATE temp_links
 SET target = nodes.taxid
 FROM nodes
-WHERE links.target = nodes.id
+WHERE temp_links.target = nodes.id
+
+
+//create new table links,the data comes from temp_links 
+create table links as
+select * from temp_links 
+where source in 
+(select taxid from nodes where nodes.taxid=temp_links.source) 
+and target in 
+(select taxid from nodes where nodes.taxid=temp_links.target);
+
+
+//add new column source_level and insert value from nodes
+alter table links add column source_level varchar(255);
+
+UPDATE links
+SET source_level = nodes.taxlevel
+FROM nodes
+WHERE links.source = nodes.taxid
+
+
+//add new column target_level and insert value from nodes
+alter table links add column target_level varchar(255);
+
+UPDATE links
+SET target_level = nodes.taxlevel
+FROM nodes
+WHERE links.target = nodes.taxid
+
+
+//drop table temp_links
+drop table temp_links;
 
 
 
