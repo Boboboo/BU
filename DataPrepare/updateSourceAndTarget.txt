@@ -37,9 +37,6 @@ FROM nodes
 WHERE links.target = nodes.taxid
 
 
-//drop table temp_links
-drop table temp_links;
-
 //add new column contextId and insert values from table contexts
 alter table links add column contextId varchar(255);
 
@@ -48,17 +45,17 @@ SET contextId = contexts.id
 from contexts
 
 
+//add new column for table links and insert the temp value 0
+alter table links add column type integer;
+
+UPDATE links SET type = 0;
+
+
 //drop id column from table links, because this id is not primary key
 alter table links drop column id;
 
 //add primary key for table links, auto increment
 alter table links add column id serial primary key;
-
-
-//add new column for table links and insert the temp value 0
-alter table links add column type integer;
-
-UPDATE links SET type = 0;
 
 
 //drop temp links table
