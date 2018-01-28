@@ -62,4 +62,8 @@ alter table links add column id serial primary key;
 drop table temp_links;
 
 
+//create index for nodes using name
+create index idx_name on nodes (name);
+
+
 
