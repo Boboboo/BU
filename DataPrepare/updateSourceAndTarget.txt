@@ -10,7 +10,7 @@ FROM nodes
 WHERE temp_links.target = nodes.id
 
 
-//create new table links,the data comes from temp_links 
+//create new table links,the data comes from table temp_links 
 create table links as
 select * from temp_links 
 where source in 
@@ -19,7 +19,7 @@ and target in
 (select taxid from nodes where nodes.taxid=temp_links.target);
 
 
-//add new column source_level and insert value from nodes
+//add new column source_level and insert value from table nodes
 alter table links add column source_level varchar(255);
 
 UPDATE links
@@ -28,7 +28,7 @@ FROM nodes
 WHERE links.source = nodes.taxid
 
 
-//add new column target_level and insert value from nodes
+//add new column target_level and insert value from table nodes
 alter table links add column target_level varchar(255);
 
 UPDATE links
@@ -40,14 +40,29 @@ WHERE links.target = nodes.taxid
 //drop table temp_links
 drop table temp_links;
 
+//add new column contextId and insert values from table contexts
+alter table links add column contextId varchar(255);
+
+UPDATE links
+SET contextId = contexts.id
+from contexts
 
 
-select * 
-from links 
-where source in 
-(select taxid from nodes where name='Streptococcaceae')
-or 
-target in 
-(select taxid from nodes where name='Streptococcaceae');
+//drop id column from table links, because this id is not primary key
+alter table links drop column id;
+
+//add primary key for table links, auto increment
+alter table links add column id serial primary key;
+
+
+//add new column for table links and insert the temp value 0
+alter table links add column type integer;
+
+UPDATE links SET type = 0;
+
+
+//drop temp links table
+drop table temp_links;
+
 
 
