@@ -12,6 +12,6 @@ CREATE TABLE contexts(
 );
 
 INSERT INTO contexts (id,body_site,condition,disease_state,experiment_info,host,interaction_type,pubmed_id,pval_cutoff,pvalue_method) 
-VALUES ('CMOOO1', 'Mid_vagina', '', 'Healthy', 'Human Microbiome Project', 'Homo Sapiens', 'correlation',1231231,0.05,'fdr_bh');
+VALUES ('CM0001', 'Mid_vagina', '', 'Healthy', 'Human Microbiome Project', 'Homo Sapiens', 'correlation',1231231,0.05,'fdr_bh');
 
 
