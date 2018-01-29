@@ -1,5 +1,5 @@
 CREATE TABLE contexts(
-   id               char(10)  PRIMARY KEY     NOT NULL,
+   id               char(6)  PRIMARY KEY     NOT NULL,
    body_site        text ,                 
    condition        text , 
    disease_state    text,
@@ -11,7 +11,11 @@ CREATE TABLE contexts(
    pvalue_method    text
 );
 
+
 INSERT INTO contexts (id,body_site,condition,disease_state,experiment_info,host,interaction_type,pubmed_id,pval_cutoff,pvalue_method) 
 VALUES ('CM0001', 'Mid_vagina', '', 'Healthy', 'Human Microbiome Project', 'Homo Sapiens', 'correlation',1231231,0.05,'fdr_bh');
+
+INSERT INTO contexts (id,body_site,condition,disease_state,experiment_info,host,interaction_type,pubmed_id,pval_cutoff,pvalue_method) 
+VALUES ('CM0002', 'Mid_vagina', '', 'Healthy', 'Human Microbiome Project', 'Homo Sapiens', 'correlation',1231231,0.05,'fdr_bh');
 
 
