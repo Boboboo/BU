@@ -1,0 +1,28 @@
+CREATE TABLE morenodes(
+   taxid              varchar(255)  PRIMARY KEY     NOT NULL,
+   parent_taxid        varchar(255) ,                 
+   rank         varchar(255) , 
+   embl_code    varchar(255),
+   division_id  varchar(255),
+   inherited_div_flag             varchar(255),
+   genetic_code_id	varchar(255),
+   inherited_GC_flag       varchar(255),
+   mitochondrial_genetic_code_id      varchar(255),
+   inherited_MGC_flag     varchar(255),
+   GenBank_hidden_flag        varchar(255),
+   hidden_ubtree_root   varchar(255),
+   comments     varchar(255),
+   extra varchar(255)
+);
+
+
+\copy morenodes from '/Users/air/Desktop/nodes.dmp' (DELIMITER('|'));
+
+
+create table test as 
+select taxid,parent_taxid,rank from morenodes;
+
+
+create index test_pkey on test (taxid);
+
+
