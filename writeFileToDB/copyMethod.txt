@@ -1,3 +1,4 @@
+//for testnodes table
 CREATE TABLE morenodes(
    taxid              varchar(255)  PRIMARY KEY     NOT NULL,
    parent_taxid        varchar(255) ,                 
@@ -19,10 +20,40 @@ CREATE TABLE morenodes(
 \copy morenodes from '/Users/air/Desktop/nodes.dmp' (DELIMITER('|'));
 
 
-create table test as 
+create table testnodes as 
 select taxid,parent_taxid,rank from morenodes;
 
 
-create index test_pkey on test (taxid);
+create index test_pkey on testnodes (taxid);
+
+
+
+
+
+//for names table
+CREATE TABLE tempnames(
+   taxid              varchar(255) , 
+   name        varchar(255) ,                 
+   unique_name         varchar(255) , 
+   class    varchar(255),
+   extra varchar(255)
+);
+
+
+\copy tempnames from '/Users/air/Desktop/names.dmp' (DELIMITER('|'));
+
+
+alter table tempnames add column id serial primary key;
+
+
+CREATE TABLE names(
+   id  serial  primary key  not null,
+   taxid              varchar(255) , 
+   name        varchar(255) ,                 
+   unique_name         varchar(255) , 
+   class    varchar(255)
+);
+
+insert into names select id,taxid,name,unique_name,class from tempnames;
 
 
