@@ -1,5 +1,5 @@
 //for testnodes table
-CREATE TABLE morenodes(
+CREATE TABLE original_nodes(
    taxid              varchar(255)  PRIMARY KEY     NOT NULL,
    parent_taxid        varchar(255) ,                 
    rank         varchar(255) , 
@@ -17,21 +17,20 @@ CREATE TABLE morenodes(
 );
 
 
-\copy morenodes from '/Users/air/Desktop/nodes.dmp' (DELIMITER('|'));
+\copy original_nodes from '/Users/air/Desktop/nodes.dmp' (DELIMITER('|'));
 
 
-create table testnodes as 
-select taxid,parent_taxid,rank from morenodes;
+create table nodes1 as 
+select taxid,parent_taxid,rank from original_nodes;
 
 
-create index test_pkey on testnodes (taxid);
-
+create index nodes_pkey on nodes1 (taxid);
 
 
 
 
 //for names table
-CREATE TABLE tempnames(
+CREATE TABLE original_names(
    taxid              varchar(255) , 
    name        varchar(255) ,                 
    unique_name         varchar(255) , 
@@ -40,20 +39,36 @@ CREATE TABLE tempnames(
 );
 
 
-\copy tempnames from '/Users/air/Desktop/names.dmp' (DELIMITER('|'));
+\copy original_names from '/Users/air/Desktop/names.dmp' (DELIMITER('|'));
 
 
-alter table tempnames add column id serial primary key;
+alter table original_names add column id serial primary key;
 
 
-CREATE TABLE names(
+CREATE TABLE names1(
    id  serial  primary key  not null,
    taxid              varchar(255) , 
    name        varchar(255) ,                 
    unique_name         varchar(255) , 
-   class    varchar(255)
+   typs    varchar(255)
 );
 
-insert into names select id,taxid,name,unique_name,class from tempnames;
+insert into names1 select id,taxid,name,unique_name,type from original_names;
+
+
+
+//after load names.dmp and nodes.dmp to DB
+//now there are related tables original_names and original_nodes
+
+create table names1 as select * from original_names where unique_name <> ''  
+   or type='scientific name' or type='genbank common name' or type='common name' or type='synonym' or type='equivalent name';
+
+update names1 set name=unique_name where unique_name <> '';
+
+update names1 set type='unique name' where unique_name <> '';
+
+alter table names1 drop column unique_name;
+
+alter table names1 add column rank varchar(255);
 
 
