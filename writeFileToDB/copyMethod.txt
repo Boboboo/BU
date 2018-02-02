@@ -45,7 +45,7 @@ CREATE TABLE original_names(
 alter table original_names add column id serial primary key;
 
 
-CREATE TABLE names1(
+CREATE TABLE names(
    id  serial  primary key  not null,
    taxid              varchar(255) , 
    name        varchar(255) ,                 
@@ -53,22 +53,24 @@ CREATE TABLE names1(
    typs    varchar(255)
 );
 
-insert into names1 select id,taxid,name,unique_name,type from original_names;
+insert into names select id,taxid,name,unique_name,type from original_names;
 
 
 
 //after load names.dmp and nodes.dmp to DB
 //now there are related tables original_names and original_nodes
 
-create table names1 as select * from original_names where unique_name <> ''  
+create table nodes as select * from original_names where unique_name <> ''  
    or type='scientific name' or type='genbank common name' or type='common name' or type='synonym' or type='equivalent name';
 
-update names1 set name=unique_name where unique_name <> '';
+update nodes set name=unique_name where unique_name <> '';
 
-update names1 set type='unique name' where unique_name <> '';
+update nodes set type='unique name' where unique_name <> '';
 
-alter table names1 drop column unique_name;
+alter table nodes drop column unique_name;
 
-alter table names1 add column rank varchar(255);
+alter table nodes add column rank varchar(255);
+
+update nodes set rank=original_nodes.rank from original_nodes where original_nodes.taxid=nodes.taxid;
 
 

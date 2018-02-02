@@ -1,40 +1,40 @@
 //update values for source and target in table temp_links
 UPDATE temp_links
-SET source = nodes.taxid
-FROM nodes
-WHERE temp_links.source = nodes.id;
+SET source = nodes1.taxid
+FROM nodes1
+WHERE temp_links.source = nodes1.id;
 
 UPDATE temp_links
-SET target = nodes.taxid
-FROM nodes
-WHERE temp_links.target = nodes.id
+SET target = nodes1.taxid
+FROM nodes1
+WHERE temp_links.target = nodes1.id
 
 
 //create new table links,the data comes from table temp_links 
 create table links as
 select * from temp_links 
 where source in 
-(select taxid from nodes where nodes.taxid=temp_links.source) 
+(select taxid from nodes1 where nodes1.taxid=temp_links.source) 
 and target in 
-(select taxid from nodes where nodes.taxid=temp_links.target);
+(select taxid from nodes1 where nodes1.taxid=temp_links.target);
 
 
-//add new column source_level and insert value from table nodes
+//add new column source_level and insert value from table nodes1
 alter table links add column entity_1_type varchar(255);
 
 UPDATE links
-SET entity_1_type = nodes.taxlevel
-FROM nodes
-WHERE links.source = nodes.taxid
+SET entity_1_type = nodes1.taxlevel
+FROM nodes1
+WHERE links.source = nodes1.taxid
 
 
-//add new column target_level and insert value from table nodes
+//add new column target_level and insert value from table nodes1
 alter table links add column entity_2_type varchar(255);
 
 UPDATE links
-SET entity_2_type = nodes.taxlevel
-FROM nodes
-WHERE links.target = nodes.taxid
+SET entity_2_type = nodes1.taxlevel
+FROM nodes1
+WHERE links.target = nodes1.taxid
 
 
 //add new column contextId and insert values from table contexts
@@ -54,8 +54,8 @@ UPDATE links SET interaction_type = 'correlation';
 drop table temp_links;
 
 
-//create index for nodes using name
-create index idx_name on nodes (name);
+//create index for nodes1 using name
+create index idx_name on nodes1 (name);
 
 
 //change table: add some column and rename some columns
@@ -64,28 +64,28 @@ alter table links rename column source_cond to entity_1_name
 alter table links rename column target_cond to entity_2_name
 
 UPDATE links
-SET entity_1_name = nodes.name
-FROM nodes
-WHERE links.source = nodes.taxid
+SET entity_1_name = nodes1.name
+FROM nodes1
+WHERE links.source = nodes1.taxid
 
 UPDATE links
-SET entity_2_name = nodes.name
-FROM nodes
-WHERE links.target = nodes.taxid
+SET entity_2_name = nodes1.name
+FROM nodes1
+WHERE links.target = nodes1.taxid
 
 alter table links add column habitat_1 varchar(255);
 
 UPDATE links
 SET habitat_1 = contexts.body_site
 from contexts
-where contextid='CM0001'
+where contextid='C30001'
 
 alter table links add column habitat_2 varchar(255);
 
 UPDATE links
 SET habitat_2 = contexts.body_site
 from contexts
-where contextid='CM0001'
+where contextid='C30001'
 
 
 alter table links rename column source to bio_entity_1;
