@@ -20,6 +20,7 @@ public class WriteJSONToDB {
 				 .configure("hibernate.cfg.xml")
 				 .addAnnotatedClass(Node.class)
 		         .addAnnotatedClass(Link.class)
+//		         .addAnnotatedClass(Context.class)
 		         .buildSessionFactory();
 
 		 //write nodes data to DB
@@ -29,7 +30,7 @@ public class WriteJSONToDB {
 		 JSONParser parser = new JSONParser();
 		
          try {    
-             JSONArray data = (JSONArray) parser.parse(new FileReader("/Users/air/Desktop/updatedNodes.json"));
+             JSONArray data = (JSONArray) parser.parse(new FileReader("/Users/air/Desktop/1/updatedNodes.json"));
  
              for (Object o : data){
 				  JSONObject node = (JSONObject) o;
@@ -38,12 +39,12 @@ public class WriteJSONToDB {
    			      String lineage = (String) node.get("lineage");
    			      String name = (String) node.get("name");
    			      String taxlevel = (String) node.get("taxlevel");
-   			      String id = (String) node.get("id");
-   			      JSONArray list=(JSONArray) node.get("children");
-		          String children=JSONArraytoArray(list);
+   			      String id= (String) node.get("id");
+//   			  JSONArray list=(JSONArray) node.get("children");
+//		          String children=JSONArraytoArray(list);
 			      //System.out.println(children);
 
-			      Node theNode = new Node(taxid,children,lineage, name, taxlevel,id);
+			      Node theNode = new Node(taxid,lineage, name, taxlevel,id);
 			      
 				  session.save(theNode);
              }
@@ -61,12 +62,12 @@ public class WriteJSONToDB {
 		}  
          
          
-         //write links data to DB
-         session=factory.getCurrentSession();
-		 session.beginTransaction();
-		 parser = new JSONParser();
-         try {     
-            JSONArray data = (JSONArray) parser.parse(new FileReader("/Users/air/Desktop/links.json"));
+       //write links data to DB
+       session=factory.getCurrentSession();
+	   session.beginTransaction();
+	   parser = new JSONParser();
+       try {     
+            JSONArray data = (JSONArray) parser.parse(new FileReader("/Users/air/Desktop/1/links.json"));
             for (Object o : data){
 				  JSONObject link = (JSONObject) o;
 				  Double pvalue = (Double) link.get("pvalue");
@@ -75,8 +76,6 @@ public class WriteJSONToDB {
 				  String target = (String) link.get("target");
 				  String target_cond = (String) link.get("target_cond"); 
 				  Double weight = (Double) link.get("weight");
-				  
-			      //System.out.println("Creating a new link object");
 			    
 			      Link theLink = new Link(pvalue, source, source_cond,target,target_cond,weight);
 				
@@ -84,7 +83,6 @@ public class WriteJSONToDB {
              }
             
              session.getTransaction().commit();
-             session.close();
              
          } catch (FileNotFoundException e) {
              e.printStackTrace();
@@ -95,8 +93,43 @@ public class WriteJSONToDB {
          }  catch (Exception e) {
 			factory.close();
 			//session.close();
-		}  
+		} 
          
+         
+         //write contexts data to DB
+//       session=factory.getCurrentSession();
+//		 session.beginTransaction();
+//		 parser = new JSONParser();
+//         try {     
+//            JSONArray data = (JSONArray) parser.parse(new FileReader("/Users/air/Desktop/contexts.json"));
+//            for (Object o : data){
+//				  JSONObject context = (JSONObject) o;
+//            		  String id=(String) context.get("id");
+//            	      String body_site=(String) context.get("body_site");
+//            	      String condition=(String) context.get("condition");
+//            	      String disease_state=(String) context.get("disease_state");
+//            	      String experiment_info=(String) context.get("experiment_info");
+//            		  String host=(String) context.get("host");
+//            		  String interaction_type=(String) context.get("interaction_type");
+//            		  Integer pubmed_id=(Integer) context.get("pubmed_id");
+//                   Double pval_cutoff=(Double) context.get("pval_cutoff");
+//            	      String pvalue_method=(String) context.get("pvalue_method");
+//            	      Context theContext=new Context(id, body_site, condition, disease_state, experiment_info, host, interaction_type, pubmed_id, pval_cutoff, pvalue_method);
+//				  session.save(theContext);
+//             }
+//            
+//             session.getTransaction().commit();
+//             
+//         } catch (FileNotFoundException e) {
+//             e.printStackTrace();
+//         } catch (IOException e) {
+//             e.printStackTrace();
+//         } catch (ParseException e) {
+//             e.printStackTrace();
+//         }  catch (Exception e) {
+//			factory.close();
+//			//session.close();
+//		}              
 	}
 
 	

@@ -27,7 +27,7 @@ public class ReadDataFromDB {
 	         
 	         Gson gson=new Gson();
 	         
-	         ResultSet rs = stmt.executeQuery("SELECT * FROM links");
+	         ResultSet rs = stmt.executeQuery("SELECT * FROM temp_links");
 	         
 	         List<Link> resultList=new ArrayList<>();
 	         
@@ -47,27 +47,29 @@ public class ReadDataFromDB {
 	         System.out.println(resultJson);
 	         
 	         stmt = con.createStatement();
-	         rs = stmt.executeQuery("SELECT * FROM nodes");
+	         rs = stmt.executeQuery("SELECT * FROM nodes1");
 	         while (rs.next()) {
 		            String taxid = rs.getString("taxid");
 		            String taxlevel = rs.getString("taxlevel");
 		            String name=rs.getString("name");
 		            String lineage=rs.getString("lineage");
-		            String children=rs.getString("children");
-		            Node theNode=new Node(taxid, children, lineage, name, taxlevel);
+		            String id=rs.getString("id");
+		            Node theNode=new Node(taxid,lineage, name, taxlevel,id);
 		            String jsonObject=gson.toJson(theNode);
 		            System.out.println(jsonObject);
 	         }
 	         
-	         rs = stmt.executeQuery("UPDATE links " + 
-		         		"SET source = nodes.taxid " + 
-		         		"FROM nodes " + 
-		         		"WHERE links.source = nodes.id;");
-	         
-	         rs = stmt.executeQuery("UPDATE links " + 
-		         		"SET target = nodes.taxid " + 
-		         		"FROM nodes " + 
-		         		"WHERE links.target = nodes.id;");
+//	         stmt = con.createStatement();
+//	         rs = stmt.executeQuery("UPDATE temp_links " + 
+//		         		"SET source = nodes.taxid " + 
+//		         		"FROM nodes " + 
+//		         		"WHERE temp_links.source = nodes.id;");
+//	         
+//	         stmt = con.createStatement();
+//	         rs = stmt.executeQuery("UPDATE temp_links " + 
+//		         		"SET target = nodes.taxid " + 
+//		         		"FROM nodes " + 
+//		         		"WHERE temp_links.target = nodes.id;");
 	           
 	      } catch(SQLException e) {
 	         System.out.println("SQL exception occured" + e);

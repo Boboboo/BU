@@ -1,22 +1,17 @@
 package com.data;
 
-import javax.persistence.Column;
+
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="nodes")
+@Table(name="nodes1")
 public class Node {
 	
 	
 	@Id 
 	private String taxid;
-	
-	@Column(length=2500)
-	private String children;
 
 	private String lineage;
 	
@@ -30,6 +25,13 @@ public class Node {
 		super();
 	}
 
+	public Node(String taxid, String lineage, String name, String taxlevel) {
+		super();
+		this.taxid = taxid;
+		this.lineage = lineage;
+		this.name = name;
+		this.taxlevel = taxlevel;
+	}
 
 	public Node(String taxid, String lineage, String name, String taxlevel, String id) {
 		super();
@@ -40,28 +42,13 @@ public class Node {
 		this.id = id;
 	}
 
-	public Node(String taxid,  String children, String lineage, String name, String taxlevel, String id) {
-		super();
-		this.taxid = taxid;
-		this.children = children;
-		this.lineage = lineage;
-		this.name = name;
-		this.taxlevel = taxlevel;
-		this.id = id;
-	}
-	
 	public String getTaxid() {
 		return taxid;
 	}
 	public void setTaxid(String taxid) {
 		this.taxid = taxid;
 	}
-	public String getChildren() {
-		return children;
-	}
-	public void setChildren(String children) {
-		this.children = children;
-	}
+
 	public String getLineage() {
 		return lineage;
 	}
@@ -86,9 +73,10 @@ public class Node {
 	public void setId(String id) {
 		this.id = id;
 	}
+	
 	@Override
 	public String toString() {
-		return "Node [taxid=" + taxid + ", children=" + children + ", lineage=" + lineage + ", name=" + name
+		return "Node [taxid=" + taxid + ", lineage=" + lineage + ", name=" + name
 				+ ", taxlevel=" + taxlevel + ", id=" + id + "]";
 	}
 	

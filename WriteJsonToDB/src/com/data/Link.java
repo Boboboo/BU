@@ -8,7 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="links")
+@Table(name="temp_links")
 public class Link {
 	@Id 
 	@Column(name ="id")
