@@ -16,16 +16,12 @@ CREATE TABLE original_nodes(
    extra varchar(255)
 );
 
-
 \copy original_nodes from '/Users/air/Desktop/nodes.dmp' (DELIMITER('|'));
-
 
 create table nodes1 as 
 select taxid,parent_taxid,rank from original_nodes;
 
-
 create index nodes_pkey on nodes1 (taxid);
-
 
 
 
@@ -38,12 +34,9 @@ CREATE TABLE original_names(
    extra varchar(255)
 );
 
-
 \copy original_names from '/Users/air/Desktop/names.dmp' (DELIMITER('|'));
 
-
 alter table original_names add column id serial primary key;
-
 
 CREATE TABLE names(
    id  serial  primary key  not null,
@@ -57,11 +50,14 @@ insert into names select id,taxid,name,unique_name,type from original_names;
 
 
 
+
+
 //after load names.dmp and nodes.dmp to DB
 //now there are related tables original_names and original_nodes
 
 create table nodes as select * from original_names where unique_name <> ''  
-   or type='scientific name' or type='genbank common name' or type='common name' or type='synonym' or type='equivalent name';
+   or type='scientific name' or type='genbank common name' 
+   or type='common name' or type='synonym' or type='equivalent name';
 
 update nodes set name=unique_name where unique_name <> '';
 
@@ -72,5 +68,9 @@ alter table nodes drop column unique_name;
 alter table nodes add column rank varchar(255);
 
 update nodes set rank=original_nodes.rank from original_nodes where original_nodes.taxid=nodes.taxid;
+
+create index nodes_pkey on nodes (id);
+
+create index idx_name on nodes (name);
 
 
