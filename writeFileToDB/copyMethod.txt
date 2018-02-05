@@ -78,3 +78,21 @@ create index nodes_pkey on nodes (id);
 create index idx_name on nodes (name);
 
 
+
+
+//export from one database 
+\copy links to '/Users/air/Desktop/temp.csv';
+
+
+//then import to another database use tab delimiter
+CREATE TABLE temp(
+   id        int,
+   name        varchar(255) , 
+   type        varchar(255) , 
+   taxid        varchar(255) ,                 
+   rank         varchar(255)
+);
+
+\copy temp(id,name,type,taxid,rank)  from '/Users/air/Desktop/nodes.csv' with DELIMITER  E'\t';
+
+
