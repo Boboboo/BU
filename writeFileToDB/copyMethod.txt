@@ -16,7 +16,11 @@ CREATE TABLE original_nodes(
    extra varchar(255)
 );
 
+//for mac
 \copy original_nodes from '/Users/air/Desktop/nodes.dmp' (DELIMITER('|'));
+
+//for windows
+\copy original_nodes from ‘C:/Users/zhangbo/Desktop/work/data2/nodes.dmp' DELIMITERS ‘|';
 
 create table nodes1 as 
 select taxid,parent_taxid,rank from original_nodes;
