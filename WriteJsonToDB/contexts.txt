@@ -1,0 +1,82 @@
+CREATE TABLE contexts(
+   id               varchar(255)  PRIMARY KEY     NOT NULL,
+   body_site        varchar (255),                 
+   condition        varchar (255),      
+   disease_state    varchar (255),      
+   experiment_info  varchar (255),      
+   host             varchar (255),      
+   interaction_type	varchar (255),      
+   pubmed_id        int,
+   pval_cutoff      real,
+   pvalue_method    varchar (255), 
+   numbers_of_links int     
+);
+
+
+INSERT INTO contexts (id,body_site,condition,disease_state,experiment_info,host,interaction_type,pubmed_id,pval_cutoff,pvalue_method) 
+VALUES ('C30001', 'Mid_vagina', '', 'Healthy', 'Human Microbiome Project', 
+        'Homo Sapiens', 'correlation',1231231,0.05,'fdr_bh');
+
+INSERT INTO contexts (id,body_site,condition,disease_state,experiment_info,host,interaction_type,pubmed_id,pval_cutoff,pvalue_method) 
+VALUES ('C30002', 'Anterior_nares', '', 'Healthy', 'Human Microbiome Project', 'Homo Sapiens', 'correlation',1231231,0.05,'fdr_bh');
+
+INSERT INTO contexts (id,body_site,condition,disease_state,experiment_info,host,interaction_type,pubmed_id,pval_cutoff,pvalue_method) 
+VALUES ('C30003', 'Attached_Keratinized_gingiva', '', 'Healthy', 'Human Microbiome Project', 'Homo Sapiens', 'correlation',1231231,0.05,'fdr_bh');
+
+INSERT INTO contexts (id,body_site,condition,disease_state,experiment_info,host,interaction_type,pubmed_id,pval_cutoff,pvalue_method) 
+VALUES ('C30004', 'Buccal_mucosa', '', 'Healthy', 'Human Microbiome Project', 'Homo Sapiens', 'correlation',1231231,0.05,'fdr_bh');
+
+INSERT INTO contexts (id,body_site,condition,disease_state,experiment_info,host,interaction_type,pubmed_id,pval_cutoff,pvalue_method) 
+VALUES ('C30005', 'Hard_palate', '', 'Healthy', 'Human Microbiome Project', 'Homo Sapiens', 'correlation',1231231,0.05,'fdr_bh');
+
+INSERT INTO contexts (id,body_site,condition,disease_state,experiment_info,host,interaction_type,pubmed_id,pval_cutoff,pvalue_method) 
+VALUES ('C30006', 'Left_Antecubital_fossa', '', 'Healthy', 'Human Microbiome Project', 'Homo Sapiens', 'correlation',1231231,0.05,'fdr_bh');
+
+INSERT INTO contexts (id,body_site,condition,disease_state,experiment_info,host,interaction_type,pubmed_id,pval_cutoff,pvalue_method) 
+VALUES ('C30007', 'Left_Retroauricular_crease', '', 'Healthy', 'Human Microbiome Project', 'Homo Sapiens', 'correlation',1231231,0.05,'fdr_bh');
+
+INSERT INTO contexts (id,body_site,condition,disease_state,experiment_info,host,interaction_type,pubmed_id,pval_cutoff,pvalue_method) 
+VALUES ('C30008', 'Palatine_Tonsils', '', 'Healthy', 'Human Microbiome Project', 'Homo Sapiens', 'correlation',1231231,0.05,'fdr_bh');
+
+INSERT INTO contexts (id,body_site,condition,disease_state,experiment_info,host,interaction_type,pubmed_id,pval_cutoff,pvalue_method) 
+VALUES ('C30009', 'Posterior_fornix', '', 'Healthy', 'Human Microbiome Project', 'Homo Sapiens', 'correlation',1231231,0.05,'fdr_bh');
+
+INSERT INTO contexts (id,body_site,condition,disease_state,experiment_info,host,interaction_type,pubmed_id,pval_cutoff,pvalue_method) 
+VALUES ('C30010', 'Right_Antecubital_fossa', '', 'Healthy', 'Human Microbiome Project', 'Homo Sapiens', 'correlation',1231231,0.05,'fdr_bh');
+
+INSERT INTO contexts (id,body_site,condition,disease_state,experiment_info,host,interaction_type,pubmed_id,pval_cutoff,pvalue_method) 
+VALUES ('C30011', 'Saliva', '', 'Healthy', 'Human Microbiome Project', 'Homo Sapiens', 'correlation',1231231,0.05,'fdr_bh');
+
+INSERT INTO contexts (id,body_site,condition,disease_state,experiment_info,host,interaction_type,pubmed_id,pval_cutoff,pvalue_method) 
+VALUES ('C30012', 'Stool', '', 'Healthy', 'Human Microbiome Project', 'Homo Sapiens', 'correlation',1231231,0.05,'fdr_bh');
+
+INSERT INTO contexts (id,body_site,condition,disease_state,experiment_info,host,interaction_type,pubmed_id,pval_cutoff,pvalue_method) 
+VALUES ('C30013', 'Subgingival_plaque', '', 'Healthy', 'Human Microbiome Project', 'Homo Sapiens', 'correlation',1231231,0.05,'fdr_bh');
+
+INSERT INTO contexts (id,body_site,condition,disease_state,experiment_info,host,interaction_type,pubmed_id,pval_cutoff,pvalue_method) 
+VALUES ('C30014', 'Supragingival_plaque', '', 'Healthy', 'Human Microbiome Project', 'Homo Sapiens', 'correlation',1231231,0.05,'fdr_bh');
+
+INSERT INTO contexts (id,body_site,condition,disease_state,experiment_info,host,interaction_type,pubmed_id,pval_cutoff,pvalue_method) 
+VALUES ('C30015', 'Throat', '', 'Healthy', 'Human Microbiome Project', 'Homo Sapiens', 'correlation',1231231,0.05,'fdr_bh');
+
+INSERT INTO contexts (id,body_site,condition,disease_state,experiment_info,host,interaction_type,pubmed_id,pval_cutoff,pvalue_method) 
+VALUES ('C30016', 'Tongue_dorsum', '', 'Healthy', 'Human Microbiome Project', 'Homo Sapiens', 'correlation',1231231,0.05,'fdr_bh');
+
+INSERT INTO contexts (id,body_site,condition,disease_state,experiment_info,host,interaction_type,pubmed_id,pval_cutoff,pvalue_method) 
+VALUES ('C30017', 'Vaginal_introitus', '', 'Healthy', 'Human Microbiome Project', 'Homo Sapiens', 'correlation',1231231,0.05,'fdr_bh');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
