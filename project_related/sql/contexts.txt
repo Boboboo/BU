@@ -51,16 +51,19 @@ INSERT INTO contexts (id,body_site,condition,disease_state,experiment_info,host,
 VALUES ('C30012', 'Stool', '', 'Healthy', 'Human Microbiome Project', 'Homo Sapiens', 'correlation',1231231,0.05,'fdr_bh');
 
 INSERT INTO contexts (id,body_site,condition,disease_state,experiment_info,host,interaction_type,pubmed_id,pval_cutoff,pvalue_method) 
-VALUES ('C30013', 'Supragingival_plaque', '', 'Healthy', 'Human Microbiome Project', 'Homo Sapiens', 'correlation',1231231,0.05,'fdr_bh');
+VALUES ('C30013', 'Subgingival_plaque', '', 'Healthy', 'Human Microbiome Project', 'Homo Sapiens', 'correlation',1231231,0.05,'fdr_bh');
 
 INSERT INTO contexts (id,body_site,condition,disease_state,experiment_info,host,interaction_type,pubmed_id,pval_cutoff,pvalue_method) 
-VALUES ('C30014', 'Throat', '', 'Healthy', 'Human Microbiome Project', 'Homo Sapiens', 'correlation',1231231,0.05,'fdr_bh');
+VALUES ('C30014', 'Supragingival_plaque', '', 'Healthy', 'Human Microbiome Project', 'Homo Sapiens', 'correlation',1231231,0.05,'fdr_bh');
 
 INSERT INTO contexts (id,body_site,condition,disease_state,experiment_info,host,interaction_type,pubmed_id,pval_cutoff,pvalue_method) 
-VALUES ('C30015', 'Tongue_dorsum', '', 'Healthy', 'Human Microbiome Project', 'Homo Sapiens', 'correlation',1231231,0.05,'fdr_bh');
+VALUES ('C30015', 'Throat', '', 'Healthy', 'Human Microbiome Project', 'Homo Sapiens', 'correlation',1231231,0.05,'fdr_bh');
 
 INSERT INTO contexts (id,body_site,condition,disease_state,experiment_info,host,interaction_type,pubmed_id,pval_cutoff,pvalue_method) 
-VALUES ('C30016', 'Vaginal_introitus', '', 'Healthy', 'Human Microbiome Project', 'Homo Sapiens', 'correlation',1231231,0.05,'fdr_bh');
+VALUES ('C30016', 'Tongue_dorsum', '', 'Healthy', 'Human Microbiome Project', 'Homo Sapiens', 'correlation',1231231,0.05,'fdr_bh');
+
+INSERT INTO contexts (id,body_site,condition,disease_state,experiment_info,host,interaction_type,pubmed_id,pval_cutoff,pvalue_method) 
+VALUES ('C30017', 'Vaginal_introitus', '', 'Healthy', 'Human Microbiome Project', 'Homo Sapiens', 'correlation',1231231,0.05,'fdr_bh');
 
 
 
