@@ -1,19 +1,21 @@
 CREATE TABLE contexts(
-   id               char(6)  PRIMARY KEY     NOT NULL,
-   body_site        text ,                 
-   condition        text , 
-   disease_state    text,
-   experiment_info  text,
-   host             text,
-   interaction_type	text,
+   id               varchar(255)  PRIMARY KEY     NOT NULL,
+   body_site        varchar (255),                 
+   condition        varchar (255),      
+   disease_state    varchar (255),      
+   experiment_info  varchar (255),      
+   host             varchar (255),      
+   interaction_type	varchar (255),      
    pubmed_id        int,
    pval_cutoff      real,
-   pvalue_method    text
+   pvalue_method    varchar (255), 
+   numbers_of_links int     
 );
 
 
 INSERT INTO contexts (id,body_site,condition,disease_state,experiment_info,host,interaction_type,pubmed_id,pval_cutoff,pvalue_method) 
-VALUES ('C30001', 'Mid_vagina', '', 'Healthy', 'Human Microbiome Project', 'Homo Sapiens', 'correlation',1231231,0.05,'fdr_bh');
+VALUES ('C30001', 'Mid_vagina', '', 'Healthy', 'Human Microbiome Project', 
+        'Homo Sapiens', 'correlation',1231231,0.05,'fdr_bh');
 
 INSERT INTO contexts (id,body_site,condition,disease_state,experiment_info,host,interaction_type,pubmed_id,pval_cutoff,pvalue_method) 
 VALUES ('C30002', 'Anterior_nares', '', 'Healthy', 'Human Microbiome Project', 'Homo Sapiens', 'correlation',1231231,0.05,'fdr_bh');
@@ -59,6 +61,8 @@ VALUES ('C30015', 'Tongue_dorsum', '', 'Healthy', 'Human Microbiome Project', 'H
 
 INSERT INTO contexts (id,body_site,condition,disease_state,experiment_info,host,interaction_type,pubmed_id,pval_cutoff,pvalue_method) 
 VALUES ('C30016', 'Vaginal_introitus', '', 'Healthy', 'Human Microbiome Project', 'Homo Sapiens', 'correlation',1231231,0.05,'fdr_bh');
+
+
 
 
 
