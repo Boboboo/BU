@@ -104,7 +104,7 @@ alter sequence linksbb_id_seq rename to links_attached_id_seq;
 
 update contexts set numbers_of_links=276 where id='C30003';
 
-create table links_all as 
+create table links as 
 (select * from links_mid union all
 select * from links_anterior union all 
 select * from links_attached union all 
@@ -123,3 +123,8 @@ select * from links_throat union all
 select * from links_tougue union all
 select * from links_vaginal 
 );
+
+alter table links drop column id;
+
+//add primary key for table links, auto increment
+alter table links add column id serial primary key;
