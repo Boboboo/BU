@@ -85,14 +85,14 @@ create index idx_name on nodes (name);
 
 
 //then import to another database use tab delimiter
-CREATE TABLE temp(
-   id        int,
-   name        varchar(255) , 
-   type        varchar(255) , 
-   taxid        varchar(255) ,                 
-   rank         varchar(255)
+CREATE TABLE nodes(
+   id  serial  primary key  not null,
+   name              varchar(255) , 
+   type        varchar(255) ,                 
+   taxid        varchar(255) , 
+   rank    varchar(255)
 );
 
-\copy temp(id,name,type,taxid,rank)  from '/Users/air/Desktop/nodes.csv' with DELIMITER  E'\t';
+\copy nodes from '/Users/air/Desktop/nodes.csv' with DELIMITER '\t';
 
 
