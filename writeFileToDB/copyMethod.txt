@@ -97,19 +97,19 @@ CREATE TABLE nodes(
 
 
 create table links(
- pvalue             double,
- bio_entity_1       character varying(255), 
- entity_1_name      character varying(255),
- bio_entity_2       character varying(255),
- entity_2_name      character varying(255), 
- weight             double,
- entity_1_type      character varying(255),
- entity_2_type      character varying(255),
- contextid          character varying(255), 
- interaction_type   character varying(255),
- habitat_1          character varying(255), 
- habitat_2          character varying(255),
- id                 integer
+	pvalue             double precision,
+	bio_entity_1       character varying(255), 
+	entity_1_name      character varying(255),
+	bio_entity_2       character varying(255),
+	entity_2_name      character varying(255), 
+	weight             double precision,
+	entity_1_type      character varying(255),
+	entity_2_type      character varying(255),
+	contextid          character varying(255), 
+	interaction_type   character varying(255),
+	habitat_1          character varying(255), 
+	habitat_2          character varying(255),
+	id                serial  primary key  not null
  )
 
 \copy links from '/Users/air/Desktop/links.csv' with DELIMITER '\t';
