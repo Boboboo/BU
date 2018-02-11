@@ -112,3 +112,24 @@ select * from links_leftAn_f
 
 );
 
+
+create table links2 as 
+(select * from links_mid_all union all
+select * from links_anterior_all union all 
+select * from links_attached_all union all 
+select * from links_buccal_all union all
+select * from links_hard_all union all
+select * from links_leftAn_all union all
+select * from links_leftRe_all union all
+select * from links_palatine_all union all
+select * from links_posterior_all union all
+select * from links_rightAn_all union all
+select * from links_rightRe_all union all
+select * from links_saliva_all union all
+select * from links_stool_all union all
+select * from links_subgingival_all union all
+select * from links_supragingival_all union all
+select * from links_throat_all union all
+select * from links_tongue_all union all
+select * from links_vaginal_all 
+);
