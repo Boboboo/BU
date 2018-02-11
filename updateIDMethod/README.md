@@ -4,7 +4,7 @@ Sometimes due to job demand,  I can not put id (primary key) to the last column 
 so I need to recreate table.</br>
 
 
-#### create table links_temp
+#### 1. create table links_temp
 create table links_temp(</br>
         id                 int,</br>
 	pvalue             double precision,</br>
@@ -21,12 +21,12 @@ create table links_temp(</br>
 	habitat_2          character varying(255)</br>
  )</br>
  
- #### use the program to populate data to links_temp
+ #### 2. use the program to populate data to links_temp
  
- #### export data from links_temp
+ #### 3. export data from links_temp
  \copy links_temp to '/Users/air/Desktop/temp.csv';</br>
  
- #### create table links, and clarify primary key at this moment
+ #### 4. create table links, and clarify primary key at this moment
 create table links(</br>
         id                 serial primary key  not null,</br>
 	pvalue             double precision,</br>
@@ -43,6 +43,6 @@ create table links(</br>
 	habitat_2          character varying(255)</br>
  )</br>
  
- #### import data to links
+ #### 5. import data to links
  \copy links from '/Users/air/Desktop/temp.csv' with DELIMITER E'\t';
  
