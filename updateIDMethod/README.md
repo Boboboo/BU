@@ -21,10 +21,13 @@ create table links_temp(</br>
 	habitat_2          character varying(255)</br>
  )</br>
  
+ 
  #### 2. use the program to populate data to links_temp
+ 
  
  #### 3. export data from links_temp
  \copy links_temp to '/Users/air/Desktop/temp.csv';</br>
+ 
  
  #### 4. create table links, and clarify primary key at this moment
 create table links(</br>
@@ -42,6 +45,7 @@ create table links(</br>
 	habitat_1          character varying(255),</br> 
 	habitat_2          character varying(255)</br>
  )</br>
+ 
  
  #### 5. import data to links
  \copy links from '/Users/air/Desktop/temp.csv' with DELIMITER E'\t';
