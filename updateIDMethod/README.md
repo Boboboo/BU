@@ -1,6 +1,6 @@
 ## Update ID Method
 
-Sometimes due to job demand,  I can not put id (primary key) to the last column after update id column value. 
+Sometimes due to job demand,  I need to put id (primary key) only in the first column, not last column after populating data.
 so I need to recreate table.</br>
 
 
@@ -22,11 +22,14 @@ create table links_temp(</br>
  )</br>
  
  
+ 
  #### 2. use the program to populate data to links_temp
+ 
  
  
  #### 3. export data from links_temp
  \copy links_temp to '/Users/air/Desktop/temp.csv';</br>
+ 
  
  
  #### 4. create table links, and clarify primary key at this moment
@@ -45,6 +48,7 @@ create table links(</br>
 	habitat_1          character varying(255),</br> 
 	habitat_2          character varying(255)</br>
  )</br>
+ 
  
  
  #### 5. import data to links
