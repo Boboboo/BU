@@ -7,18 +7,18 @@ so I need to recreate table.</br>
 #### 1. create table links_temp
 create table links_temp(</br>
         id                 int,</br>
-	pvalue             double precision,</br>
 	bio_entity_1       character varying(255),</br> 
 	entity_1_name      character varying(255),</br>
 	bio_entity_2       character varying(255),</br>
 	entity_2_name      character varying(255),</br> 
-	weight             double precision,</br>
 	entity_1_type      character varying(255),</br>
 	entity_2_type      character varying(255),</br>
 	contextid          character varying(255),</br> 
 	interaction_type   character varying(255),</br>
 	habitat_1          character varying(255),</br> 
 	habitat_2          character varying(255)</br>
+	pvalue             double precision,</br>
+	weight             double precision,</br>
  )</br>
  
  
@@ -35,18 +35,18 @@ create table links_temp(</br>
  #### 4. create table links, and clarify primary key at this moment
 create table links(</br>
         id                 serial primary key  not null,</br>
-	pvalue             double precision,</br>
 	bio_entity_1       character varying(255),</br> 
 	entity_1_name      character varying(255),</br>
 	bio_entity_2       character varying(255),</br>
 	entity_2_name      character varying(255),</br> 
-	weight             double precision,</br>
 	entity_1_type      character varying(255),</br>
 	entity_2_type      character varying(255),</br>
 	contextid          character varying(255),</br> 
 	interaction_type   character varying(255),</br>
 	habitat_1          character varying(255),</br> 
 	habitat_2          character varying(255)</br>
+	pvalue             double precision,</br>
+	weight             double precision,</br>
  )</br>
  
  
