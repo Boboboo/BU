@@ -16,9 +16,9 @@ create table links_temp(</br>
 	contextid          character varying(255),</br> 
 	interaction_type   character varying(255),</br>
 	habitat_1          character varying(255),</br> 
-	habitat_2          character varying(255)</br>
+	habitat_2          character varying(255),</br>
 	pvalue             double precision,</br>
-	weight             double precision,</br>
+	weight             double precision</br>
  )</br>
  
  
@@ -44,9 +44,9 @@ create table links(</br>
 	contextid          character varying(255),</br> 
 	interaction_type   character varying(255),</br>
 	habitat_1          character varying(255),</br> 
-	habitat_2          character varying(255)</br>
+	habitat_2          character varying(255),</br>
 	pvalue             double precision,</br>
-	weight             double precision,</br>
+	weight             double precision</br>
  )</br>
  
  
