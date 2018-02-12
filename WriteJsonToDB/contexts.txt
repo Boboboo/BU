@@ -126,16 +126,16 @@ VALUES ('C3018', 'Vaginal_introitus', '', 'Healthy', 'Human Microbiome Project',
 
 //later data to be combined
 INSERT INTO contexts (id,body_site,condition,disease_state,experiment_info,host,interaction_type,pubmed_id,pval_cutoff,pvalue_method,numbers_of_links) 
-VALUES ('C0001', 'Skin', '', 'Healthy', '','', '',26177982,,'',1547);
+VALUES ('C0001', 'Skin', '', 'Healthy', '','', '',26177982,,'',10049);
 
 INSERT INTO contexts (id,body_site,condition,disease_state,experiment_info,host,interaction_type,pubmed_id,pval_cutoff,pvalue_method,numbers_of_links) 
-VALUES ('C0002', 'Colon', '', 'Cancer', '','', '',26515465,,'',607);
+VALUES ('C0002', 'Colon', '', 'Cancer', '','', '',26515465,,'',925);
 
 INSERT INTO contexts (id,body_site,condition,disease_state,experiment_info,host,interaction_type,pubmed_id,pval_cutoff,pvalue_method,numbers_of_links) 
 VALUES ('C0003', 'Colon', '', 'Normal', '','', '',26515465,,'',478);
 
 INSERT INTO contexts (id,body_site,condition,disease_state,experiment_info,host,interaction_type,pubmed_id,pval_cutoff,pvalue_method,numbers_of_links) 
-VALUES ('C0004', 'Gut', '', 'Healthy', '','', '',26332837,,'',3940);
+VALUES ('C0004', 'Gut', '', 'Healthy', '','', '',26332837,,'',6587);
 
 INSERT INTO contexts (id,body_site,condition,disease_state,experiment_info,host,interaction_type,pubmed_id,pval_cutoff,pvalue_method,numbers_of_links) 
 VALUES ('C0005', 'Gut', '', 'Healthy', '','', '',23799070,,'',369);
