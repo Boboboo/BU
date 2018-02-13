@@ -113,3 +113,13 @@ create table links(
  )
 
 \copy links from '/Users/air/Desktop/links.csv' with DELIMITER '\t';
+
+//add hit_total nodes
+CREATE TABLE nodes(
+   id  serial  primary key  not null,
+   name              varchar(255) , 
+   type        varchar(255) ,                 
+   taxid        varchar(255) , 
+   rank    varchar(255),
+   hit_total integer
+);
