@@ -17,15 +17,15 @@ import com.google.gson.Gson;
 
 public class writeLineageToDB {
 	public static void main(String[] args) {
-		  String taxid=null;
-		  String parent_taxid=null;
-		  String rank;
+	      String taxid=null;
+	      String parent_taxid=null;
+	      String rank;
 		 
-		  String taxidCom;
-		  String name;
-		  String type;
+	      String taxidCom;
+	      String name;
+	      String type;
 		 
-		  Map<String,ArrayList<Combination>> map= new HashMap<>(); 
+	      Map<String,ArrayList<Combination>> map= new HashMap<>(); 
 		 
 	      try {
 	         Class.forName("org.postgresql.Driver");
@@ -37,9 +37,8 @@ public class writeLineageToDB {
 	         Connection con = DriverManager.getConnection(
 	            "jdbc:postgresql://localhost:5432/postgres","postgres", "722722");
 	         
-	         
-		     //taxid -- parent_taxid
-		     Statement statement = con.createStatement();
+		 //taxid -- parent_taxid
+		 Statement statement = con.createStatement();
 	         ResultSet res = statement.executeQuery("SELECT * FROM original_nodes");
 	         
 	         Map<String,String> mapl= new HashMap<>(); 
@@ -57,32 +56,31 @@ public class writeLineageToDB {
 	         Map<String,String> newMap=new HashMap<>();
 	         
 	         for(String key : mapl.keySet()) {
-	        	 	String orig_lineage="";
-	        	 	String keyCopy=key;
-	        	 	
-	        	 	if(mapl.get(key).equals("1")) {
-	        	 		newMap.put(keyCopy, "1");
-	        	 		continue;
-	        	 	}
-	        	 		
-	        	 	while(!mapl.get(key).equals("1")) {
-	        	 		orig_lineage+=mapl.get(key)+"||";
-	        	 		key=mapl.get(key);
-	        	 	}
-	        	 	orig_lineage+="1";
-	        	 	newMap.put(keyCopy, orig_lineage);
+			String orig_lineage="";
+			String keyCopy=key;
+
+			if(mapl.get(key).equals("1")) {
+				newMap.put(keyCopy, "1");
+				continue;
+			}
+
+			while(!mapl.get(key).equals("1")) {
+				orig_lineage+=mapl.get(key)+"||";
+				key=mapl.get(key);
+			}
+			orig_lineage+="1";
+			newMap.put(keyCopy, orig_lineage);
 	         }
 
 	         
 	         for(String key : newMap.keySet()) {
 		         System.out.println(key+"   "+newMap.get(key));
-		        	 String sql = "INSERT INTO mind_lineage VALUES (?, ?)";
-		        	 PreparedStatement pstmt = con.prepareStatement(sql);
-		        	 
-		        	 pstmt.setString(1, key);
-		        	 pstmt.setString(2, newMap.get(key));
-		        	 pstmt.executeUpdate();
-	        	 	
+			 String sql = "INSERT INTO mind_lineage VALUES (?, ?)";
+			 PreparedStatement pstmt = con.prepareStatement(sql);
+
+			 pstmt.setString(1, key);
+			 pstmt.setString(2, newMap.get(key));
+			 pstmt.executeUpdate();	 	
 	         }
 
 	         System.out.println("done!");   
@@ -124,12 +122,9 @@ public class writeLineageToDB {
 //		     	
 //		     	System.out.println(key+" ____________ "+newList);			    	
 //		     } 		     
-		     
-
-	        
+		       
 	      } catch(SQLException e) {
 	         System.out.println("SQL exception occured" + e);
-	      }
-	      
+	      }      
 	   }
 }
