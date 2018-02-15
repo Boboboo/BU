@@ -49,7 +49,7 @@ public class writeLineageToDB {
         	        rank=res.getString("rank");
         	        
         	        if(!mapl.containsKey(taxid)) {
-        	        		mapl.put(taxid, parent_taxid); 
+        	        	mapl.put(taxid, parent_taxid); 
         	        }
 	         }
 	         
