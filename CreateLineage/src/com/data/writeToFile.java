@@ -1,4 +1,9 @@
 package com.data;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -10,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class read2 {
+public class read {
 	
 	public static void main(String[] args) {
 		  
@@ -21,7 +26,7 @@ public class read2 {
 		  String taxid=null;
 		  String lineage=null;
 		  
-		  String taxidCom;
+		  String taxidCom=null;
 		  String name;
 		  String type = null;
 		  
@@ -49,6 +54,7 @@ public class read2 {
 	      	        String temp[]=lineage.split("\\|\\|");
 	      	        String nameList="";
 	      	        String nameResult=null;
+	      	        Integer count=0;
 	      	       
 	      	        for(int i=0;i<temp.length;i++) {
 		    	        		Statement s = con.createStatement();
@@ -57,7 +63,8 @@ public class read2 {
 		    	        		
 		    	        		ResultSet result = s.executeQuery(sql);
 		    	        			
-	    	        			String string=null;
+	    	        			String resultName=null;
+	    	        			String resultTaxid=null;
 	    	        			
 	    	        			Map<String, String> newMap=new HashMap<>();
 		    	        		
@@ -74,46 +81,63 @@ public class read2 {
 		    	        		}
 
 	    	        			if(newMap.get("unique name")!=null) {
-	    	        				string=newMap.get("unique name");
+	    	        				resultName=newMap.get("unique name");
+	    	        				resultTaxid=taxidCom;
 	    	        			}
 	    	        			else if(newMap.get("scientific name")!=null) {
-	    	        				string=newMap.get("scientific name");
+	    	        				resultName=newMap.get("scientific name");
+	    	        				resultTaxid=taxidCom;
 	    	        			}
 	    	        			else if(newMap.get("genbank common name")!=null) {
-	    	        				string=newMap.get("genbank common name");
+	    	        				resultName=newMap.get("genbank common name");
+	    	        				resultTaxid=taxidCom;
 	    	        			}
 	    	        			else if(newMap.get("common name")!=null) {
-	    	        				string=newMap.get("common name");
+	    	        				resultName=newMap.get("common name");
+	    	        				resultTaxid=taxidCom;
 	    	        			}
 	    	        			else if(newMap.get("equivalent name")!=null) {
-	    	        				string=newMap.get("equivalent name");
+	    	        				resultName=newMap.get("equivalent name");
+	    	        				resultTaxid=taxidCom;
 	    	        			}
 	    	        			else if(newMap.get("synonym")!=null) {
-	    	        				string=newMap.get("synonym");
+	    	        				resultName=newMap.get("synonym");
+	    	        				resultTaxid=taxidCom;
 	    	        			}
 	    	        			
-	    	        			nameList+=string+"||";
+	    	        			nameList+=resultName+"["+resultTaxid+"]"+"||";
 	    	        			nameResult=nameList.substring(0, nameList.length()-2);
-	  
 	      	        }
-	      	        System.out.println(taxid+"****"+nameResult);
-	      	       
-	      	        
-	      	        //Statement st = con.createStatement();
-			        //ResultSet resu = st.executeQuery("INSERT INTO mind_lineage (taxid,lineage) values ('"+taxid+"','"+nameList+ "')");
-	      	   
-	      	        sql0 = "INSERT INTO mind_lineage (taxid,lineage) values ('"+taxid+"','"+nameResult+ "')";
-	      		
-				    ps = con.prepareStatement(sql0);
-			
-				    ps.executeUpdate();
-		         
+	      	        System.out.println(taxid+" ** "+nameResult);
+	      	        writeUsingFileWriter(taxid+"\t"+nameResult+"\r\n");
+	      	            
 		         }
 		        System.out.println("done!!!"); 
-		      
+	        
 	      } catch(SQLException e) {
 	         System.out.println("SQL exception occured" + e);
 	      }
 	      
 	   }
+	
+	private static void writeUsingFileWriter(String data) {
+        File file = new File("/Users/air/Desktop/BufferedWriter.txt");
+        FileWriter fr = null;
+        try {
+            fr = new FileWriter(file,true);
+            fr.write(data);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally{
+            try {
+                fr.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+	
+	
+	    
 }
+
