@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class read {
+public class writeToFile {
 	
 	public static void main(String[] args) {
 		  
