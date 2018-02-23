@@ -141,6 +141,12 @@ INSERT INTO contexts (id,body_site,condition,disease_state,experiment_info,host,
 VALUES ('C0005', 'Gut', '', 'Healthy', '','', '',23799070,null,'',369);
 
 
+INSERT INTO mind_contexts (id,body_site,condition,disease_state,experiment_info,
+                      host,interaction_type,pubmed_id,pval_cutoff,pvalue_method,total_link) 
+VALUES ('C0007', 'Tooth surface', 'Early colonizers', 'Healthy', 'Communication among Oral Bacteria',
+        'Homo Sapiens', 'binding',12209001, -1000,'',38);
+
+
 
 
 
