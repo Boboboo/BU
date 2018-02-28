@@ -146,13 +146,17 @@ INSERT INTO mind_contexts (id,body_site,condition,disease_state,experiment_info,
 VALUES ('C0007', 'Tooth surface', 'Early colonizers', 'Healthy', 'Communication among Oral Bacteria',
         'Homo Sapiens', 'binding',12209001, -1000,'',38);
         
- INSERT INTO mind_contexts (id,body_site,condition,disease_state,experiment_info,
+        
+INSERT INTO mind_contexts (id,body_site,condition,disease_state,experiment_info,
                       host,interaction_type,pubmed_id,pval_cutoff,pvalue_method,total_link) 
 VALUES ('C0008', 'Tooth surface', 'Late colonizers', 'Healthy', 'Communication among Oral Bacteria',
         'Homo Sapiens', 'binding',12209001, -1000,'',10);
 
 
-
+INSERT INTO mind_contexts (id,body_site,condition,disease_state,experiment_info,
+                      host,interaction_type,pubmed_id,pval_cutoff,pvalue_method,total_link) 
+VALUES ('C2000', 'vagina', '220 women, 34% were Black and 44% were White women, 98 (43%) had BV by Amsel’s criteria, and 117 (53%) by Gram stain', 'Bacterial vaginosis', 'Broad-range 16S rRNA gene PCR and pyrosequencing, Pearson correlation',
+        'Homo Sapiens', 'correlation', 22719852, -1000,'',2401);
 
 
 
