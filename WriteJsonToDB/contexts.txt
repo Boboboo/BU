@@ -157,6 +157,13 @@ INSERT INTO mind_contexts (id,body_site,condition,disease_state,experiment_info,
                       host,interaction_type,pubmed_id,pval_cutoff,pvalue_method,total_link) 
 VALUES ('C2000', 'vagina', '220 women, 34% were Black and 44% were White women, 98 (43%) had BV by Amsel’s criteria, and 117 (53%) by Gram stain', 'Bacterial vaginosis', 'Broad-range 16S rRNA gene PCR and pyrosequencing, Pearson correlation',
         'Homo Sapiens', 'correlation', 22719852, -1000,'',841);
+        
+ 
+INSERT INTO mind_contexts (id,body_site,condition,disease_state,experiment_info,
+                      host,interaction_type,pubmed_id,pval_cutoff,pvalue_method,total_link) 
+VALUES ('C1000', 'Adenoid', '67 individuals who underwent adenoidectomy, weight=MIC-ρ2 > 0.2', 'Uncertain', 
+        '16S rDNA sequence, MINE(maximal information-based non-parametric exploration)',
+        'Homo Sapiens', 'correlation', 23113966, 0.05,'',841);
 
 
 
