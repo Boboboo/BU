@@ -23,8 +23,8 @@
 		
 		<!-- <property name="cache.provider_class">org.hibernate.cache.NoCacheProvider</property> -->
 
-       <mapping class="com.data.Link"/>
-       <mapping class="com.data.Node"/>
+       <mapping class="com.data.Link"/> 
+       <!-- <mapping class="com.data.Node"/>  -->
 
     </session-factory>
 </hibernate-configuration>

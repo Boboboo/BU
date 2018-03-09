@@ -30,7 +30,7 @@ public class WriteJSONToDB {
 		 JSONParser parser = new JSONParser();
 		
          try {    
-             JSONArray data = (JSONArray) parser.parse(new FileReader("/Users/air/Desktop/1/updatedNodes.json"));
+             JSONArray data = (JSONArray) parser.parse(new FileReader("/Users/air/Desktop/nodes.json"));
  
              for (Object o : data){
 				  JSONObject node = (JSONObject) o;
@@ -67,7 +67,7 @@ public class WriteJSONToDB {
 	   session.beginTransaction();
 	   parser = new JSONParser();
        try {     
-            JSONArray data = (JSONArray) parser.parse(new FileReader("/Users/air/Desktop/1/links.json"));
+            JSONArray data = (JSONArray) parser.parse(new FileReader("/Users/air/Desktop/links.json"));
             for (Object o : data){
 				  JSONObject link = (JSONObject) o;
 				  Double pvalue = (Double) link.get("pvalue");
