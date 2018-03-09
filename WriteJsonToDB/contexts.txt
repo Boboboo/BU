@@ -171,12 +171,7 @@ VALUES ('C0009', '', 'lateral gene transfer by transduction from donors → reci
         '','17158 recent transduction events in 3982 genomes',
         '', 'transduction', 27648812, null,'',841);
    
-   
-   INSERT INTO mind_contexts (id,body_site,condition,disease_state,experiment_info,
-                      host,interaction_type,pubmed_id,pval_cutoff,pvalue_method,total_link) 
-VALUES ('C0009', '', 'lateral gene transfer by transduction from donors → recipients mediated by the  phages', 
-        '','17158 recent transduction events in 3982 genomes',
-        '', 'transduction', 27648812, null,'',841);
+
 
 
 
