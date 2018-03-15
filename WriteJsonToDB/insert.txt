@@ -1,0 +1,21 @@
+insert into links_leftP (weight,entity_1_name,entity_2_name) select weight,name1,name2 from leftP
+
+update links_foreHead set bio_entity_1=original_names.taxid from original_names
+where original_names.name=links_foreHead.entity_1_name
+
+update links_foreHead set bio_entity_2=original_names.taxid from original_names
+where original_names.name=links_foreHead.entity_2_name
+
+update links_foreHead set entity_1_type=original_nodes.rank from original_nodes
+where original_nodes.taxid=links_foreHead.bio_entity_1
+
+update links_foreHead set entity_2_type=original_nodes.rank from original_nodes
+where original_nodes.taxid=links_foreHead.bio_entity_2
+
+update links_foreHead set contextid='C0500'
+
+update links_foreHead set interaction_type='correlation'
+
+update links_foreHead set habitat_1='forehead'
+
+update links_foreHead set habitat_2='forehead'
