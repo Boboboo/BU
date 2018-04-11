@@ -15,7 +15,7 @@ import java.util.Set;
 
 import com.google.gson.Gson;
 
-public class findLineage {
+public class FindLineage {
 	public static void main(String[] args) {
 		  String taxid=null;
 		  String parent_taxid=null;
@@ -24,8 +24,6 @@ public class findLineage {
 		  String taxidCom;
 		  String name;
 		  String type;
-		 
-		  Map<String,ArrayList<Combination>> map= new HashMap<>(); 
 		 
 	      try {
 	         Class.forName("org.postgresql.Driver");
@@ -73,10 +71,9 @@ public class findLineage {
 	        	 	newMap.put(keyCopy, orig_lineage);
 	         }
 
-	         
 	         for(String key : newMap.keySet()) {
 		         System.out.println(key+"   "+newMap.get(key));
-		        	 String sql = "INSERT INTO mind_lineage VALUES (?, ?)";
+		        	 String sql = "INSERT INTO mind_lineage_number VALUES (?, ?)";
 		        	 PreparedStatement pstmt = con.prepareStatement(sql);
 		        	 
 		        	 pstmt.setString(1, key);

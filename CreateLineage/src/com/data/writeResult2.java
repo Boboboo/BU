@@ -13,19 +13,16 @@ import java.util.Map;
 public class writeResult2 {
 	
 	public static void main(String[] args) {
-		  
 		  PreparedStatement ps = null;
 	      String sql0 = null;
-	      
 	      
 		  String taxid=null;
 		  String lineage=null;
 		  
 		  String taxidCom=null;
-		  String name;
+		  String name=null;
 		  String type = null;
-		  
-		  Map<String,ArrayList<Combination>> map= new HashMap<>(); 
+		  String rank=null;
 		 
 	      try {
 	         Class.forName("org.postgresql.Driver");
@@ -33,14 +30,12 @@ public class writeResult2 {
 	         System.out.println("Class not found "+ e);
 	      }
 	      
-	      
 	      try {
 		         Connection con = DriverManager.getConnection(
 		            "jdbc:postgresql://localhost:5432/postgres","postgres", "722722");
 			     
-		         
 			     Statement statement = con.createStatement();
-		         ResultSet res = statement.executeQuery("SELECT * FROM mind_lineage_number");
+		         ResultSet res = statement.executeQuery("SELECT * FROM mind_lineage_number where taxid=1238173");
 		        
 		         while (res.next()) {
 		      	        taxid=res.getString("taxid");
@@ -52,8 +47,7 @@ public class writeResult2 {
 		      	       
 		      	        for(int i=0;i<temp.length;i++) {
 			    	        		Statement s = con.createStatement();
-			    	        		String sql="SELECT * FROM nodes_all where taxid='"+temp[i]+"'";
-			    	        		
+			    	        		String sql="SELECT * FROM mind_nodes_all where taxid='"+temp[i]+"'";
 			    	        		
 			    	        		ResultSet result = s.executeQuery(sql);
 			    	        			
@@ -66,11 +60,10 @@ public class writeResult2 {
 			    	 	      	      taxidCom=result.getString("taxid");
 			    	 	      	      name=result.getString("name");
 			    	 	      	      type=result.getString("type");
+			    	 	      	      rank=result.getString("rank");
 			    	 	      	      
 			    	 	      	      if(!newMap.containsKey(type)) {
-			    	 	      	    	  		newMap.put(type, name);
-			    	 	      	      }else {
-			    	 	      	    	  		newMap.put(type, newMap.get(type));
+			    	 	      	    	  		newMap.put(type, name+"*"+rank);
 			    	 	      	      }
 			    	        		}
 
@@ -99,17 +92,17 @@ public class writeResult2 {
 		    	        				resultTaxid=taxidCom;
 		    	        			}
 		    	        			
-		    	        			nameList+=resultName+"["+resultTaxid+"]"+"||";
+		    	        			//nameList+=resultName+"["+resultTaxid+"]"+"||";
+		    	        			nameList+=resultTaxid+"*"+resultName+"||";
 		    	        			nameResult=nameList.substring(0, nameList.length()-2);
 		      	        }
-		      	        System.out.println(taxid+" ** "+nameResult);
+		      	        System.out.println(taxid+":"+nameResult);
 	      	   
 		      	        sql0 = "INSERT INTO mind_lineage (taxid,lineage) values ('"+taxid+"','"+nameResult+ "')";
 		      		
 					    ps = con.prepareStatement(sql0);
 				
-					    ps.executeUpdate();
-		         
+					    ps.executeUpdate();        
 		         }
 		        System.out.println("done!!!"); 
 		      

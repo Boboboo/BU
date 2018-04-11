@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 //write into file and then copy from file
-public class writeResult {
+public class writeResult1 {
 	
 	public static void main(String[] args) {
 		  
@@ -29,15 +29,12 @@ public class writeResult {
 		  String taxidCom=null;
 		  String name;
 		  String type = null;
-		  
-		  Map<String,ArrayList<Combination>> map= new HashMap<>(); 
 		 
 	      try {
 	         Class.forName("org.postgresql.Driver");
 	      } catch(ClassNotFoundException e) {
 	         System.out.println("Class not found "+ e);
 	      }
-	      
 	      
 	      try {
 		         Connection con = DriverManager.getConnection(
@@ -58,7 +55,7 @@ public class writeResult {
 	      	       
 	      	        for(int i=0;i<temp.length;i++) {
 		    	        		Statement s = con.createStatement();
-		    	        		String sql="SELECT * FROM nodes_all where taxid='"+temp[i]+"'";
+		    	        		String sql="SELECT * FROM mind_nodes_all where taxid='"+temp[i]+"'";
 		    	        		
 		    	        		
 		    	        		ResultSet result = s.executeQuery(sql);

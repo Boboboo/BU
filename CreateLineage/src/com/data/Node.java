@@ -1,8 +1,8 @@
 package com.data;
 
 
+//For those node entity in database original_nodes
 public class Node {
-	
 	private String taxid;
     private String parent_taxid;
     private String rank;
@@ -37,11 +37,6 @@ public class Node {
 	}
 	public void setRank(String rank) {
 		this.rank = rank;
-	}
-	
-	@Override
-	public String toString() {
-		return "NodeSampleToDB [taxid=" + taxid + ", parent_taxid=" + parent_taxid + ", rank=" + rank + "]";
 	}
 
 }
