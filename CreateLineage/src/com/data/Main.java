@@ -26,147 +26,147 @@ public class Main {
 		            "jdbc:postgresql://localhost:5432/postgres","postgres", "722722");
 		    
 		    
-			 Map<String,String> newMap=loadALlLineageNumber();
+		    Map<String,String> newMap=loadALlLineageNumber();
 			 
-	         //get mind_lineage_number from newMap memory
-	         String taxid1=null;
-			 String lineage1=null;
+	            //get mind_lineage_number from newMap memory
+	            String taxid1=null;
+		    String lineage1=null;
 			  
-			 String taxidCom1=null;
-			 String name1=null;
-			 String type1 = null;
-			 String rank1=null;
+		    String taxidCom1=null;
+		    String name1=null;
+		    String type1 = null;
+		    String rank1=null;
 	         
-	         for(String key : newMap.keySet()) {
-		        //System.out.println(key+"   "+newMap.get(key));
-		        taxid1=key;
-	        	    String temp[]=newMap.get(key).split("\\|\\|");
-      	        String nameList="";
-      	        String nameResult=null;
-      	       
-      	        for(int i=0;i<temp.length;i++) {
-      	         	Statement s  = con.createStatement();
-	    	        		String sql="SELECT * FROM mind_unique where taxid='"+temp[i]+"' limit 5";
-	    	        		ResultSet result = s.executeQuery(sql);
-    	        			
-    	        			Map<String, String> resultMap=new HashMap<>();
-	    	        		
-    	        			while (result.next()) {
-	    	 	      	      taxidCom1=result.getString("taxid");
-	    	 	      	      name1=result.getString("name");
-	    	 	      	      type1=result.getString("type");
-	    	 	      	      rank1=result.getString("rank");  
-	    	        		}
+	            for(String key : newMap.keySet()) {
+			//System.out.println(key+"   "+newMap.get(key));
+			taxid1=key;
+		        String temp[]=newMap.get(key).split("\\|\\|");
+			String nameList="";
+			String nameResult=null;
 
-    	        			//nameList+=resultName+"["+resultTaxid+"]"+"||";
-    	        			nameList+=taxidCom1+"*"+name1+"*"+type1+"*"+rank1+"||";
-    	        			nameResult=nameList.substring(0, nameList.length()-2);
-      	        }
-      	        System.out.println(taxid1+"\t"+nameResult);
-      	        writeUsingFileWriter(taxid1+"\t"+nameResult+"\r\n");
-	         }
-	         System.out.println("done!");   
+			for(int i=0;i<temp.length;i++) {
+				Statement s  = con.createStatement();
+				String sql="SELECT * FROM mind_unique where taxid='"+temp[i]+"' limit 5";
+				ResultSet result = s.executeQuery(sql);
+
+				Map<String, String> resultMap=new HashMap<>();
+
+				while (result.next()) {
+				      taxidCom1=result.getString("taxid");
+				      name1=result.getString("name");
+				      type1=result.getString("type");
+				      rank1=result.getString("rank");  
+				}
+
+				//nameList+=resultName+"["+resultTaxid+"]"+"||";
+				nameList+=taxidCom1+"*"+name1+"*"+type1+"*"+rank1+"||";
+				nameResult=nameList.substring(0, nameList.length()-2);
+			}
+			System.out.println(taxid1+"\t"+nameResult);
+			writeUsingFileWriter(taxid1+"\t"+nameResult+"\r\n");
+		}
+			System.out.println("done!");   
 	   }   
 	   
 	   
 	   
 	   public static Map<String, String> loadALlLineageNumber(){
-		      String taxid=null;
-			  String parent_taxid=null;
-			  String rank;
-			 
-			  String taxidCom;
-			  String name;
-			  String type;
-			 
-			  Map<String,String> newMap=new HashMap<>();
+		     String taxid=null;
+		     String parent_taxid=null;
+		     String rank;
+
+		     String taxidCom;
+		     String name;
+		     String type;
+
+		     Map<String,String> newMap=new HashMap<>();
 			 
 		      try {
-		         Class.forName("org.postgresql.Driver");
+		            Class.forName("org.postgresql.Driver");
 		      } catch(ClassNotFoundException e) {
-		         System.out.println("Class not found "+ e);
+		            System.out.println("Class not found "+ e);
 		      }
 		      
 		      try {
-		         Connection con = DriverManager.getConnection(
-		            "jdbc:postgresql://localhost:5432/postgres","postgres", "722722");
-		         
-			     //taxid -- parent_taxid
-			     Statement statement = con.createStatement();
-		         ResultSet res = statement.executeQuery("SELECT * FROM original_nodes");
-		         
-		         Map<String,String> mapl= new HashMap<>(); 
-		     
-		         while (res.next()) {
-	        	        taxid=res.getString("taxid");
-	        	        parent_taxid=res.getString("parent_taxid");
-	        	        rank=res.getString("rank");
-	        	        
-	        	        if(!mapl.containsKey(taxid)) {
-	        	        		mapl.put(taxid, parent_taxid); 
-	        	        }
-		         }
+				 Connection con = DriverManager.getConnection(
+				    "jdbc:postgresql://localhost:5432/postgres","postgres", "722722");
 
-		         for(String key : mapl.keySet()) {
-		        	 	String orig_lineage="";
-		        	 	String keyCopy=key;
-		        	 	
-		        	 	if(mapl.get(key).equals("1")) {
-		        	 		newMap.put(keyCopy, "1");
-		        	 		continue;
-		        	 	}
-		        	 		
-		        	 	while(!mapl.get(key).equals("1")) {
-		        	 		orig_lineage+=mapl.get(key)+"||";
-		        	 		key=mapl.get(key);
-		        	 	}
-		        	 	orig_lineage+="1";
-		        	 	
-		        	 	//write all the mind_lineage_number to newMap memory
-		        	 	newMap.put(keyCopy, orig_lineage);
-		          }
+				 //taxid -- parent_taxid
+				 Statement statement = con.createStatement();
+				 ResultSet res = statement.executeQuery("SELECT * FROM original_nodes");
+
+				 Map<String,String> mapl= new HashMap<>(); 
+
+				 while (res.next()) {
+					taxid=res.getString("taxid");
+					parent_taxid=res.getString("parent_taxid");
+					rank=res.getString("rank");
+
+					if(!mapl.containsKey(taxid)) {
+						mapl.put(taxid, parent_taxid); 
+					}
+				 }
+
+				 for(String key : mapl.keySet()) {
+					String orig_lineage="";
+					String keyCopy=key;
+
+					if(mapl.get(key).equals("1")) {
+						newMap.put(keyCopy, "1");
+						continue;
+					}
+
+					while(!mapl.get(key).equals("1")) {
+						orig_lineage+=mapl.get(key)+"||";
+						key=mapl.get(key);
+					}
+					orig_lineage+="1";
+
+					//write all the mind_lineage_number to newMap memory
+					newMap.put(keyCopy, orig_lineage);
+				  }
 		       }catch(SQLException e) {
 			         System.out.println("SQL exception occured" + e);
-			   }
+			}
 		       return newMap; 
 	   }
 	   
 	   
-	   //create only one table from table mind_nodes_all according to the priority
+	   //create only one taxid-node from table mind_nodes_all according to the priority
 	   public static Map<Integer,String> getAllNodesNoDepulicatesTaxid() {
 		      PreparedStatement ps = null;
 		    
-			  int taxid=0;
-			  String name=null;
-			  String type = null;
-			  String rank=null;
-			  
-			  Map<Integer, List<MindNode>> map=new HashMap<>();   //the first classify map
-			  Map<String,String> oneMap=null;                     //to get the only one MindNode map
-			  Map<Integer,String> resultMap=null; 
-			  
-			  List<MindNode> list;
-			  String nameList=null;
-			  String nameResult=null;
+		     int taxid=0;
+		     String name=null;
+		     String type = null;
+		     String rank=null;
+
+		     Map<Integer, List<MindNode>> map=new HashMap<>();   //the first classify map
+		     Map<String,String> oneMap=null;                     //to get the only one MindNode map
+		     Map<Integer,String> resultMap=null; 
+
+		     List<MindNode> list;
+		     String nameList=null;
+		     String nameResult=null;
 			 
-		      try {
+		     try {
 		         Class.forName("org.postgresql.Driver");
-		      } catch(ClassNotFoundException e) {
+		     } catch(ClassNotFoundException e) {
 		         System.out.println("Class not found "+ e);
-		      }
+		     }
 		      
-		      try {
+		     try {
 			         Connection con = DriverManager.getConnection(
 			            "jdbc:postgresql://localhost:5432/postgres","postgres", "722722");
 				     
-	    	        		Statement s = con.createStatement();
-	    	        		String sql="SELECT * FROM mind_nodes_all limit 50";
-	    	        		ResultSet result = s.executeQuery(sql);
+	    	        	Statement s = con.createStatement();
+	    	        	String sql="SELECT * FROM mind_nodes_all limit 50";
+	    	        	ResultSet result = s.executeQuery(sql);
 	    	        		
-	    	        		Integer resultTaxid=0;
-	    	        		String resultEntity=null;
+	    	        	Integer resultTaxid=0;
+	    	        	String resultEntity=null;
 
- 	        			while (result.next()) {
+ 	        		while (result.next()) {
 	    	 	      	      name=result.getString("name");
 	    	 	      	      type=result.getString("type");
 	    	 	      	      taxid=result.getInt("taxid");
@@ -175,61 +175,54 @@ public class Main {
 	    	 	      	      MindNode mindNode=new MindNode(name, type, rank);
 	    	 	      	      
 	    	 	      	      if(!map.containsKey(taxid)) {
-	    	 	      	    	  		list=new ArrayList<>();
-	    	 	      	    	  		list.add(mindNode);
-	    	 	      	    	  		map.put(taxid, list);
-	    	 	      	   	  }else {
-	    	 	      	   		    list=map.get(taxid);
-	    	 	      	   		    list.add(mindNode);
-	    	 	      	   		    map.put(taxid, list);    
-	    	 	      	   	  } 	     
- 	        			}
+	    	 	      	    	  	list=new ArrayList<>();
+	    	 	      	    	  	list.add(mindNode);
+	    	 	      	    	  	map.put(taxid, list);
+	    	 	      	     }else {
+	    	 	      	   		list=map.get(taxid);
+	    	 	      	   		list.add(mindNode);
+	    	 	      	   	        map.put(taxid, list);    
+	    	 	      	     } 	     
+ 	        		}
  	        			
  	        			
- 	        			for(Integer id:map.keySet()) {
- 	        				oneMap=new HashMap<>();
- 	        				String nType=null;
- 	        				String nName=null;
- 	        				String nRank=null;
- 	        				
- 	        				//filter to make sure each type has one record
- 	        				for(int i=0;i<map.get(id).size();i++) {
- 	        					nType=map.get(id).get(i).getType();
- 	        					nName=map.get(id).get(i).getName();
- 	        					nRank=map.get(id).get(i).getRank();
- 	        					if(!oneMap.containsKey(nType)) {    
- 	        						oneMap.put(nType, id+"\t"+nName+"\t"+nRank+"\t"+nType);
- 	 	        				}
- 	        				}
- 	        					
- 	        				//get the specific only one record according to priority
-        					if(oneMap.get("unique name")!=null) {
-	 	    	        			resultEntity=oneMap.get("unique name");
- 	    	        			}
- 	    	        			else if(oneMap.get("scientific name")!=null) {
- 	    	        				resultEntity=oneMap.get("scientific name");
- 	    	        			
- 	    	        			}
- 	    	        			else if(oneMap.get("genbank common name")!=null) {
- 	    	        				resultEntity=oneMap.get("genbank common name");
- 	    	        				
- 	    	        			}
- 	    	        			else if(oneMap.get("common name")!=null) {
- 	    	        				resultEntity=oneMap.get("common name");
- 	    	        				
- 	    	        			}
- 	    	        			else if(oneMap.get("equivalent name")!=null) {
- 	    	        				resultEntity=oneMap.get("equivalent name");
- 	    	        				
- 	    	        			}
- 	    	        			else if(oneMap.get("synonym")!=null) {
- 	    	        				resultEntity=oneMap.get("synonym");
- 	    	        			}		        					
-        					
-        					
-        					System.out.println(resultEntity);
- 	        			}
- 	        			
+				for(Integer id:map.keySet()) {
+					oneMap=new HashMap<>();
+					String nType=null;
+					String nName=null;
+					String nRank=null;
+
+					//filter to make sure each type has one record
+					for(int i=0;i<map.get(id).size();i++) {
+						nType=map.get(id).get(i).getType();
+						nName=map.get(id).get(i).getName();
+						nRank=map.get(id).get(i).getRank();
+						if(!oneMap.containsKey(nType)) {    
+							oneMap.put(nType, id+"\t"+nName+"\t"+nRank+"\t"+nType);
+						}
+					}
+
+					//get the specific only one record according to priority
+					if(oneMap.get("unique name")!=null) {
+						resultEntity=oneMap.get("unique name");
+					}
+					else if(oneMap.get("scientific name")!=null) {
+						resultEntity=oneMap.get("scientific name");
+					}
+					else if(oneMap.get("genbank common name")!=null) {
+						resultEntity=oneMap.get("genbank common name");
+					}
+					else if(oneMap.get("common name")!=null) {
+						resultEntity=oneMap.get("common name");
+					}
+					else if(oneMap.get("equivalent name")!=null) {
+						resultEntity=oneMap.get("equivalent name");
+					}
+					else if(oneMap.get("synonym")!=null) {
+						resultEntity=oneMap.get("synonym");
+					}		        					
+					//System.out.println(resultEntity);
+				}			
 		      } catch(SQLException e) {
 		         System.out.println("SQL exception occured" + e);
 		      }	 
