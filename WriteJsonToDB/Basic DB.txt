@@ -7,10 +7,9 @@ and target in
 (select taxid from nodesb where nodesb.taxid=linksb.target);
 
 
-//add new column source_level and insert value from table nodesb
 alter table linksbb add column entity_1_type varchar(255);
 
-//add new column for table links and insert the temp value 0
+
 alter table linksbb add column interaction_type varchar(255);
 
 
@@ -18,3 +17,5 @@ alter table links drop column id;
 
 //add primary key for table links, auto increment
 alter table links add column id serial primary key;
+
+insert into links_leftP (weight,entity_1_name,entity_2_name) select weight,name1,name2 from leftP
