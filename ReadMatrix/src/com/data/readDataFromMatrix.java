@@ -1,3 +1,4 @@
+
 package com.data;
 
 import java.io.BufferedReader;
@@ -6,6 +7,8 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream.GetField;
+import java.nio.channels.SelectableChannel;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -24,10 +27,10 @@ import org.w3c.dom.ls.LSInput;
 public class readDataFromMatrix {
 	
 	public static void main(String[] args) throws IOException  {		
+		writeNamesToDB();
 //		writeWeightFromMatrixToDB();
-//		writeNamesToDB();
 //		FilterDuplicates();
-		writeFinalIntoDB();
+//		writeFinalIntoDB();
 	}
 	
 	
@@ -38,7 +41,7 @@ public class readDataFromMatrix {
 	           System.out.println("Class not found "+ e);
 	      }
 	      
-		  FileInputStream fstream = new FileInputStream("/Users/air/Desktop/d1final.txt");
+		  FileInputStream fstream = new FileInputStream("/Users/air/Desktop/c1803res.txt");
 		  BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
 		  String strLine;
 			      
@@ -51,7 +54,7 @@ public class readDataFromMatrix {
 						String[] array=strLine.split("\\*");
 						
 						id++;
-						String sql = "INSERT INTO links_c1003 VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+						String sql = "INSERT INTO links_c1803 VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 			        		PreparedStatement pstmt = con.prepareStatement(sql);
 
 			        		pstmt.setInt(1, id);
@@ -61,15 +64,14 @@ public class readDataFromMatrix {
 			        		pstmt.setString(5, array[1].trim());
 			        		pstmt.setString(6, "");
 			        		pstmt.setString(7, "");
-			        		pstmt.setString(8, "C1003");
-			        		pstmt.setString(9, "correlation");
-			        		pstmt.setString(10, "Gut, stool sample");
-			        		pstmt.setString(11, "Gut, stool sample");
-			        		pstmt.setDouble(12, -1000.0);
+			        		pstmt.setString(8, "C1803");
+			        		pstmt.setString(9, "Mixed");
+			        		pstmt.setString(10, "Gut");
+			        		pstmt.setString(11, "Gut");
+			        		pstmt.setDouble(12, 0);
 			        		pstmt.setDouble(13, Double.valueOf(array[2]));
 			        		pstmt.setString(14, "");
-				        	pstmt.executeUpdate();	
-							
+				        	pstmt.executeUpdate();				
 				  }
 				  br.close(); 
 		          System.out.println("done!!!"); 
@@ -95,12 +97,11 @@ public class readDataFromMatrix {
 	         Connection con = DriverManager.getConnection(
 	            "jdbc:postgresql://localhost:5432/postgres","postgres", "722722");
 	         Statement statement = con.createStatement();
-	         ResultSet res = statement.executeQuery("SELECT * FROM c1003");
-	         
+	         ResultSet res = statement.executeQuery("SELECT * FROM name");
 	         
 	         while (res.next()) {
-	        	 	name1=res.getString("name1");
-	        	 	name2=res.getString("name2");
+	        	 	name1=res.getString("n1");
+	        	 	name2=res.getString("n2");
 	        	 	weight=res.getDouble("weight");
 	        	 	
 	        	 	if(!map.containsKey(name1+"*"+name2) && !map.containsKey(name2+"*"+name1)) {
@@ -148,16 +149,14 @@ public class readDataFromMatrix {
 		        	 		id++;
 					  	String[] namePair=arrayList.get(i).split("\t");
 						
-						String sql = "INSERT INTO name VALUES (?,?,?)";
+						String sql = "INSERT INTO temp VALUES (?,?,?)";
 						PreparedStatement pstmt = con.prepareStatement(sql);
 						pstmt.setInt(1, id);
 						pstmt.setString(2, namePair[0]);
 						pstmt.setString(3, namePair[1]);
 						
-						
 						pstmt.executeUpdate();	
 				 }	
-				
 		         System.out.println("done!!!"); 
 		     } catch(SQLException e) {
 		        System.out.println("SQL exception occured" + e);
@@ -169,8 +168,8 @@ public class readDataFromMatrix {
 		ArrayList<String> newList=new ArrayList<>();
 		int count=0;
 		
-		for(int i=1;i<arrayList.size();i++) {     //i start from to get filter the first one OTUs
-			 for(int j=1;j<arrayList.size();j++) { 
+		for(int i=0;i<arrayList.size();i++) {     
+			 for(int j=0;j<arrayList.size();j++) { 
 				 count++;
 				 newList.add(arrayList.get(i)+"\t"+arrayList.get(j));
 			 }
@@ -179,20 +178,25 @@ public class readDataFromMatrix {
 //		for(int i=0;i<newList.size();i++) {  
 //			 System.out.println(newList.get(i));
 //		}
-//		System.out.println(count);
+		System.out.println(count);
 		return newList;	
 	}
 	
 	public static ArrayList<String> getNameList() throws IOException{
-	      FileInputStream fstream = new FileInputStream("/Users/air/Desktop/d1.txt");
+	      FileInputStream fstream = new FileInputStream("/Users/air/Desktop/res.txt");
 		  BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
 		  String strLine;
 
 		  ArrayList<String> list=new ArrayList<>();
 		  while ((strLine = br.readLine()) != null)   {
 				String[] array=strLine.split("\t");
-				list.add(array[0]);	
+				
+				list.add(array[0]);					
 		  }
+//		  for(String i:list) {
+////			  writeUsingFileWriter(i+"\r\n") ;
+//			  System.out.println(i);
+//		  }
 		  
 		  br.close();
 		  return list;
@@ -206,7 +210,7 @@ public class readDataFromMatrix {
 	           System.out.println("Class not found "+ e);
 	      }
 	      
-		  FileInputStream fstream = new FileInputStream("/Users/air/Desktop/d1matrix.txt");
+		  FileInputStream fstream = new FileInputStream("/Users/air/Desktop/c1803.txt");
 		  BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
 		  String strLine;
 			      
@@ -218,17 +222,18 @@ public class readDataFromMatrix {
 		         while ((strLine = br.readLine()) != null)   {
 						String[] array=strLine.split("\t");
 						ArrayList<String> list=new ArrayList<>();
-
-						for(int i=0;i<array.length;i++) {
+						
+						for(int i=0;i<array.length;i++) {  
 							id++;
 							list.add(array[i]);
 							String sql = "INSERT INTO l VALUES (?,?)";
 				        		PreparedStatement pstmt = con.prepareStatement(sql);
 	
-				        		pstmt.setDouble(1, Double.valueOf(list.get(i)));
+				        		pstmt.setDouble(1, Double.valueOf(array[i]));
 				        		pstmt.setInt(2, id);
 					        	pstmt.executeUpdate();	
-						}	
+						}
+						System.out.println(list.get(0));
 				  }
 				  br.close(); 
 		          System.out.println("done!!!"); 
@@ -238,7 +243,7 @@ public class readDataFromMatrix {
 	}
 	
 	private static void writeUsingFileWriter(String data) {
-        File file = new File("/Users/air/Desktop/d1final.txt");
+        File file = new File("/Users/air/Desktop/c1803res.txt");
         FileWriter fr = null;
         try {
             fr = new FileWriter(file,true);
@@ -253,4 +258,6 @@ public class readDataFromMatrix {
             }
         }
     }	
+	
+	
 }

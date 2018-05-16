@@ -1,8 +1,5 @@
 package com.data;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
 
 
 public class Node {
@@ -12,8 +9,12 @@ public class Node {
     private String taxid;
     private String rank;
     private Integer hit_total;
+   
     
-    
+	public Node() {
+		super();
+	}
+
 	public Node(Integer id, String name, String type, String taxid, String rank, Integer hit_total) {
 		super();
 		this.id = id;
@@ -31,12 +32,16 @@ public class Node {
 	public void setId(Integer id) {
 		this.id = id;
 	}
+	
+	
 	public String getName() {
 		return name;
 	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
+
 	public String getType() {
 		return type;
 	}
@@ -61,7 +66,5 @@ public class Node {
 	public void setHit_total(Integer hit_total) {
 		this.hit_total = hit_total;
 	}
-     
-    
 
 }

@@ -7,8 +7,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-
-
 public class updateLinkId {
 	public static void main(String[] args) {
 		           
@@ -38,7 +36,7 @@ public class updateLinkId {
 	         
 	         //get all names collection for each taxid
 	         Statement stmt = con.createStatement();
-	         ResultSet rs = stmt.executeQuery("SELECT * FROM l");
+	         ResultSet rs = stmt.executeQuery("SELECT * FROM s");
 	         int id=0;
 	         while (rs.next()) {
 	        	    id++;          

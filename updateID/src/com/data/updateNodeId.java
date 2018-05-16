@@ -30,7 +30,7 @@ public static void main(String[] args) {
 	         
 	         //get all names collection for each taxid
 	         Statement stmt = con.createStatement();
-	         ResultSet rs = stmt.executeQuery("SELECT * FROM nodesss");
+	         ResultSet rs = stmt.executeQuery("SELECT * FROM n");
 	         
 	         id=0;
 	         while (rs.next()) {

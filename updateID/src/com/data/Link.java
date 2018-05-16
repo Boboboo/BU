@@ -2,13 +2,13 @@ package com.data;
 
 
 public class Link {
-
 	private int id;             
 	private String bio_entity_1;      
 	private String entity_1_name;     
 	private String bio_entity_2;    
 	private String entity_2_name;        
 	private String entity_1_type;      
+	
 	private String entity_2_type;    
 	private String contextid;       
 	private String interaction_type;  
@@ -16,11 +16,11 @@ public class Link {
 	private String habitat_2;
 	private double pvalue;
 	private double weight; 
+	private String annotation;
 	
-	
-	public Link(int id,  String bio_entity_1, String entity_1_name, String bio_entity_2,
-			String entity_2_name, String entity_1_type, String entity_2_type, String contextid,
-			String interaction_type, String habitat_1, String habitat_2,double pvalue,double weight) {
+	public Link(int id, String bio_entity_1, String entity_1_name, String bio_entity_2, String entity_2_name,
+			String entity_1_type, String entity_2_type, String contextid, String interaction_type, String habitat_1,
+			String habitat_2, double pvalue, double weight, String annotation) {
 		super();
 		this.id = id;
 		this.bio_entity_1 = bio_entity_1;
@@ -35,6 +35,7 @@ public class Link {
 		this.habitat_2 = habitat_2;
 		this.pvalue = pvalue;
 		this.weight = weight;
+		this.annotation = annotation;
 	}
 	
 	public int getId() {
@@ -114,6 +115,14 @@ public class Link {
 	}
 	public void setHabitat_2(String habitat_2) {
 		this.habitat_2 = habitat_2;
+	}
+
+	public String getAnnotation() {
+		return annotation;
+	}
+
+	public void setAnnotation(String annotation) {
+		this.annotation = annotation;
 	}
 	
 }
