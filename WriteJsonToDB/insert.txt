@@ -1,2 +1,0 @@
-insert into links_leftP (weight,entity_1_name,entity_2_name) select weight,name1,name2 from leftP
-
