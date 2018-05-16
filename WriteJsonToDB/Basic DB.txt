@@ -43,3 +43,11 @@ INSERT INTO mind_contexts (id,body_site,condition,disease_state,experiment_info,
 VALUES ('C1001', 'Gut, stool sample', 'CS1-3 following birth, total 25 at-term caesarean (CS) delivered neonates', 
         'Healthy','HITChip microarray data, Pearson’s correlation',
         'Homo Sapiens', 'correlation', 26332837, 0.05,'',3375);
+        
+
+
+//for mac
+\copy original_nodes from '/Users/air/Desktop/nodes.dmp' (DELIMITER('|'));
+
+//for windows
+\copy original_nodes from ‘C:/Users/zhangbo/Desktop/nodes.dmp' DELIMITERS E‘/t';
