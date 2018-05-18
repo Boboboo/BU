@@ -50,4 +50,4 @@ VALUES ('C1001', 'Gut, stool sample', 'CS1-3 following birth, total 25 at-term c
 \copy original_nodes from '/Users/air/Desktop/nodes.dmp' (DELIMITER('|'));
 
 //for windows
-\copy original_nodes from ‘C:/Users/zhangbo/Desktop/nodes.dmp' DELIMITERS E‘/t';
+\copy original_nodes from ‘C:/Users/zhangbo/Desktop/nodes.dmp' DELIMITER E‘/t';
