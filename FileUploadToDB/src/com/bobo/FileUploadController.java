@@ -18,24 +18,19 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
  
-
-//http://localhost:8080/Submit/Upload.jsp
+//http://localhost:8080/FileUploadToDB/Upload.jsp
 @WebServlet("/uploadServlet")
-public class FileUploadServlet extends HttpServlet {
-	
-		public void doGet(HttpServletRequest request,
-				HttpServletResponse response) throws ServletException, IOException {
-				doPost(request,response);
-		}
+public class FileUploadController extends HttpServlet {
 		
 	    public void doPost(HttpServletRequest request,
 	            HttpServletResponse response) throws ServletException, IOException {
 	        
-	    		String entity_1_name = null;
+	    	    String entity_1_name = null;
 	        String entity_2_name =null;
 	        String weight=null;
 	        int id=0;
 	        List<Link> listInfo=new ArrayList<>();
+	        
 	        
 	        Connection conn = null; 
 	        String message = null;  // message will be sent back to client
