@@ -1,10 +1,7 @@
 package com.bobo;
 	
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -17,27 +14,35 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
- 
+import javax.servlet.http.Part;
+
 //http://localhost:8080/FileUploadToDB/Upload.jsp
 @WebServlet("/uploadServlet")
+@MultipartConfig
 public class FileUploadController extends HttpServlet {
-		
+	
 	    public void doPost(HttpServletRequest request,
 	            HttpServletResponse response) throws ServletException, IOException {
-	        
+	    	  
+	    		Part part=request.getPart("fileForUpload");
+	    	    String fileName = Paths.get(part.getSubmittedFileName()).getFileName().toString();
+	    	    System.out.println(fileName);
+	    	    InputStream in = part.getInputStream();
+	    	    System.out.println(in);
+	      
 	    	    String entity_1_name = null;
 	        String entity_2_name =null;
 	        String weight=null;
 	        int id=0;
 	        List<Link> listInfo=new ArrayList<>();
 	        
-	        
 	        Connection conn = null; 
 	        String message = null;  // message will be sent back to client
 
 	        try {
-	            File f = new File("/Users/air/Desktop/c1800.txt");
-	            BufferedReader b = new BufferedReader(new FileReader(f));
+	        	
+	        	    InputStreamReader isr = new InputStreamReader(in);
+	        	    BufferedReader b = new BufferedReader(isr);
 	            String readLine = "";
 	            System.out.println("Reading Start...");
 
@@ -100,4 +105,6 @@ public class FileUploadController extends HttpServlet {
 	            e.printStackTrace();
 	        }
 	    } 
+	    
+	    
 }

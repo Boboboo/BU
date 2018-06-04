@@ -62,10 +62,9 @@
       </div>
       
       <a data-toggle="modal" data-target="#fileOpen"> Upload </a>
-      
     </div>
   </nav> 
-  
+   
   <footer id="footer-navigation" class="navbar navbar-inverse navbar-fixed-bottom">
         <div class="container-fluid container-footer">
           <div class="navbar-header">
@@ -86,25 +85,25 @@
 
     <div class="modal fade" id="fileOpen" tabindex="-1" role="dialog" aria-labelledby="VisANTOpenFile">
       <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="vmodelid">Open File.....</h4>
-          </div>
-          <div class="modal-body">
-            <input type="file" onchange="loadInputFile(this)"  />
-            <div class="upload-drop-zone" id="drop-zone" ondrop="drop_handler(event, this);" ondragover="dragover_handler(event, this);" ondragleave="dragleave_handler(event, this); ">
-              Just drag and drop files here
-            </div>
-          </div>
-          <div class="modal-footer">
-            <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
-            <!-- <button type="button" class="btn btn-primary">Upload</button> -->
-            <form method="post" action="uploadServlet" enctype="multipart/form-data">
-				<input type="submit" class="btn btn-primary" value="Submit"> 
-        		</form>
-          </div>
-        </div>
+	      <form method="post" action="uploadServlet" enctype="multipart/form-data">
+		        <div class="modal-content">
+		          <div class="modal-header">
+		            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		            <h4 class="modal-title" id="vmodelid">Open File.....</h4>
+		          </div>
+		          <div class="modal-body">
+		            <input type="file" onchange="loadInputFile(this)"  name="fileForUpload"/>
+		            <div class="upload-drop-zone" id="drop-zone" ondrop="drop_handler(event, this);" ondragover="dragover_handler(event, this);" ondragleave="dragleave_handler(event, this); ">
+		              Just drag and drop files here
+		            </div>
+		          </div>
+		          <div class="modal-footer">
+		            <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
+		            <!-- <button type="button" class="btn btn-primary">Upload</button> -->
+						<input type="submit" class="btn btn-primary" value="Submit"> 
+		          </div>
+		        </div>
+	      </form>
       </div>
     </div>          
     <div class="modal fade" id="modalLoadAll" tabindex="-1" role="dialog" aria-labelledby="VisANTLoadAll">
@@ -134,8 +133,7 @@
       </div>
     </div>            
                                   
-                              
-        
+                                   
   <!-- scripts -->
   <!-- <script src="http://code.jquery.com/jquery-1.11.2.min.js" type="text/javascript"></script> -->
   <!-- <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script> -->
@@ -181,7 +179,7 @@
 
       function drop_handler(ev, mele) {
           ev.preventDefault();ev.stopPropagation();
-          //console.log("drag-drop-->"+mele.id);
+          console.log("drag-drop-->"+mele.id);
           mele.style.visibility="hidden";
           //document.getElementById("graphHolder").style.visibility="visible";
           // If dropped items aren't files, reject them
@@ -215,8 +213,8 @@
           ev.preventDefault();ev.stopPropagation();
           if (mele.id=="drop-zone") mele.className = 'upload-drop-zone drop';
           else mele.className = 'graph-container drop';
-          /*mele.style.visibility="hidden";
-          document.getElementById("graphUploader").style.visibility="visible";*/
+          mele.style.visibility="hidden";
+          document.getElementById("graphUploader").style.visibility="visible";
           // Prevent default select and drag behavior
         }
         /*function dragend_handler(ev, mele) {
@@ -243,7 +241,7 @@
           //console.log("dragleave-->"+mele.id);
           if (mele.id=="drop-zone") mele.className = 'upload-drop-zone';
           else {
-            /*document.getElementById("graphUploader").style.visibility="visible";*/
+            /* document.getElementById("graphUploader").style.visibility="visible"; */
             mele.style.visibility="hidden";
           }
         }
