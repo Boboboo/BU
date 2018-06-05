@@ -45,9 +45,8 @@ VALUES ('C0306', 'Gut', '41 healthy controls',
         'Homo Sapiens', 'correlation', 28143587, 'Spearman r > 0.7 or < −0.5','',751,'2017 Feb 1','Baoli Zhu||zhubaoli@im.ac.cn','Control-enriched');
         
 
-
 //for mac
-\copy original_nodes from '/Users/air/Desktop/nodes.dmp' (DELIMITER('|'));
+\copy original_nodes from '/Users/air/Desktop/nodes.dmp' DELIMITER E'\t';
 
 //for windows
-\copy original_nodes from ‘C:/Users/zhangbo/Desktop/nodes.dmp' DELIMITER E‘/t';
+\copy mind_links from 'C:/Users/bo/Desktop/mind_links.txt' DELIMITER E'\t';
