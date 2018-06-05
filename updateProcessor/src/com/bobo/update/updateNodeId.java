@@ -1,4 +1,4 @@
-package com.data;
+package com.bobo.update;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

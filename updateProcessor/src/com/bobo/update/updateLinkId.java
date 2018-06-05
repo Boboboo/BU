@@ -1,4 +1,4 @@
-package com.data;
+package com.bobo.update;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -36,7 +36,7 @@ public class updateLinkId {
 	         
 	         //get all names collection for each taxid
 	         Statement stmt = con.createStatement();
-	         ResultSet rs = stmt.executeQuery("SELECT * FROM s");
+	         ResultSet rs = stmt.executeQuery("SELECT * FROM allTemp");
 	         int id=0;
 	         while (rs.next()) {
 	        	    id++;          

@@ -1,4 +1,4 @@
-package com.data;
+package com.bobo.po;
 
 
 public class Link {
