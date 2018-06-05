@@ -39,10 +39,10 @@ CREATE TABLE contexts(
 
         
 INSERT INTO mind_contexts (id,body_site,condition,disease_state,experiment_info,
-                      host,interaction_type,pubmed_id,pval_cutoff,pvalue_method,total_link) 
-VALUES ('C1001', 'Gut, stool sample', 'CS1-3 following birth, total 25 at-term caesarean (CS) delivered neonates', 
-        'Healthy','HITChip microarray data, Pearson’s correlation',
-        'Homo Sapiens', 'correlation', 26332837, 0.05,'',3375);
+                      host,interaction_type,pubmed_id,pval_cutoff,pvalue_method,total_link,time,authors,note) 
+VALUES ('C0306', 'Gut', '41 healthy controls', 
+        'Healthy','shotgun metagenomic sequencing, Spearman test',
+        'Homo Sapiens', 'correlation', 28143587, 'Spearman r > 0.7 or < −0.5','',751,'2017 Feb 1','Baoli Zhu||zhubaoli@im.ac.cn','Control-enriched');
         
 
 
