@@ -16,23 +16,26 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.jar.Attributes.Name;
 
+import javax.naming.InitialContext;
+
 
 public class Main {
-
 	public static void main(String[] args) throws IOException, SQLException {
-//		FilterData();
-//		writeName();
-//		UpdateDB (); 
-		finishLinkTable();
+		FilterData("/Users/air/Desktop/4.txt");
+		writeName("/Users/air/Desktop/name.txt");
+		finishLinkTable("C0309","correlation","Gut","Gut");
+		cleanData("C0309","correlation","Gut","Gut");
+		mergeAll("C0309");
 	}
 	
 	
-	public static void FilterData()  throws IOException, SQLException {  
+	public static void FilterData(String path)  throws IOException, SQLException {  
 		 Connection conn=DBConnection.getDBConnection();
 		 Statement statement=null;
 		 
@@ -40,7 +43,7 @@ public class Main {
 		 String name1=null;
 		 String name2=null;
 		
-		 FileInputStream fstream = new FileInputStream("/Users/air/Desktop/1.txt");
+		 FileInputStream fstream = new FileInputStream(path);
 		 BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
 		 String strLine;
 		 int id=0;
@@ -48,8 +51,7 @@ public class Main {
 			 while ((strLine = br.readLine()) != null)   {
 					String[] array=strLine.split("\t");
 					if(Double.valueOf(array[2])<=0.7 && Double.valueOf(array[2])>=-0.5) {
-						//list.add(array[0]+"*"+array[1]+"*"+array[2]);
-						
+
 						id++;
 						name1=array[0];
 						name2=array[1];
@@ -74,16 +76,35 @@ public class Main {
 	}
 	
 	
-	public static void writeName () throws IOException {
+	public static void writeName (String path) throws IOException, SQLException {
+		 //FilterData();
 		 Connection conn=DBConnection.getDBConnection();
 		 Statement statement=null;
 		 String sql="";
 		 
+//		 statement = conn.createStatement();
+//		 sql="DROP TABLE IF EXISTS name";
+//		 statement.executeUpdate(sql);
+//		
+//		 sql="CREATE TABLE name" + 
+//				"(" + 
+//				"    id integer NOT NULL," + 
+//				"    n1 character varying(255)," +
+//				"    n2 character varying(255)," +
+//				"    weight double precision," +
+//				"    entity_1_name character varying(255)," + 
+//				"    entity_2_name character varying(255)," + 
+//				"    entity_1_type character varying(255)," + 
+//				"    entity_2_type character varying(255)," +
+//				"    bio_entity_1 integer," + 
+//				"    bio_entity_2 integer" + 
+//				")";
+//		 statement.executeUpdate(sql);
+		 
 		 String n=null;
 		 String entity_name=null;
-		 String species=null;
 		
-		 FileInputStream fstream = new FileInputStream("/Users/air/Desktop/name.txt");
+		 FileInputStream fstream = new FileInputStream(path);
 		 BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
 		 String strLine;
 		 
@@ -93,7 +114,6 @@ public class Main {
 					
 					n=array[0];
 					entity_name=array[1];
-					species=array[2];
 					
 					statement = conn.createStatement();
 					sql = "update name set entity_1_name='"+entity_name+"' where n1='"+n+"'"; 
@@ -110,8 +130,9 @@ public class Main {
         System.out.println("writeName() done!!!");	 
 	}
 	
-	
-	public static void UpdateDB() throws SQLException {
+	//has update name all columns
+	public static void UpdateDB() throws SQLException, IOException {
+		//writeName();
 		try {
 			Connection conn=DBConnection.getDBConnection();
 			Statement statement=null;
@@ -142,16 +163,19 @@ public class Main {
 		System.out.println("UpdateDB() done!!!");
 	}
 	
-	public static void finishLinkTable() {
+	
+	public static void finishLinkTable(String contextid,String interaction_type,String habitat_1,String habitat_2) throws SQLException, IOException {
+		UpdateDB();
 		try {
 			Connection conn=DBConnection.getDBConnection();
 			Statement statement=null;
 			String sql="";
 			statement = conn.createStatement();
-			sql="DROP TABLE IF EXISTS links_c0306";
+			sql="DROP TABLE IF EXISTS links_"+contextid+"";
+			System.out.println(sql);
 			statement.executeUpdate(sql);
 			
-			sql="CREATE TABLE links_c0306" + 
+			sql="CREATE TABLE links_"+contextid+"" + 
 					"(" + 
 					"    id integer NOT NULL," + 
 					"    bio_entity_1 integer," + 
@@ -170,12 +194,20 @@ public class Main {
 					")";
 			statement.executeUpdate(sql);	
 			
-			sql="insert into links_c0306 (id,bio_entity_1,entity_1_name,bio_entity_2,entity_2_name,entity_1_type,entity_2_type,weight) "
+			sql="insert into links_"+contextid+"" 
+					+ " (id,bio_entity_1,entity_1_name,bio_entity_2,entity_2_name,entity_1_type,entity_2_type,weight) "
 					+ "select id,bio_entity_1,entity_1_name,bio_entity_2,entity_2_name,entity_1_type,entity_2_type,weight from name";
 			statement.executeUpdate(sql);	
 			
-			sql="update links_c0306 set contextid='C0306',interaction_type='correlation',habitat_1='Gut',habitat_2='Gut'";
+			sql="update links_"+contextid+""
+					+ " set contextid='"+contextid+"',"
+					+ " interaction_type='"+interaction_type+"',"
+					+ " habitat_1='"+habitat_1+"',"
+					+ " habitat_2='"+habitat_2+"'";
 			statement.executeUpdate(sql);
+			
+//			sql="delete from name";
+//			statement.executeUpdate(sql);
 		
 		} catch (Exception e) {
 			System.out.println(e);
@@ -183,4 +215,100 @@ public class Main {
 		System.out.println("finishAll() done!!!");
 	}
 	
+	public static boolean cleanData(String contextid,String interaction_type,String habitat_1,String habitat_2) throws SQLException, IOException {
+		Set<String> set=new HashSet<>();
+		try {
+		    Connection con=DBConnection.getDBConnection();
+	  	    Statement statement=null,state=null;
+	  	    ResultSet resultSet=null,rSet=null;
+		    String sql="";
+		    String name1=null,name2=null;
+		    Double weight=null;
+		    int id=0;
+		    	  	    
+	        statement = con.createStatement();
+//	        sql="select * from mind_links"
+//	        		 + " where contextid='"+contextid+"'";
+	        sql="select * from links_"+contextid+"";
+	        resultSet = statement.executeQuery(sql);
+	        
+	        while (resultSet.next()) {
+	        	 	  name1=resultSet.getString("entity_1_name"); 
+	      	      name2=resultSet.getString("entity_2_name");
+	      	      weight=resultSet.getDouble("weight"); 	        	      
+	        		  if(!name1.equals(name2)) {
+	        			  if(!set.contains(name1+"*"+name2+"*"+weight)) {
+		      	    	  		set.add(name1+"*"+name2+"*"+weight);
+		      	      } 
+	        		  }	      	       	      
+	 	    }
+	        
+	        statement = con.createStatement();
+			sql="delete from name";
+			statement.executeUpdate(sql);
+	        
+	        Iterator<String> iterator=set.iterator();
+	        while(iterator.hasNext()) {
+	        		String[] array=iterator.next().split("\\*");
+	        		id++;
+				String sqlInsert = "INSERT INTO name VALUES (?, ?, ? ,?)";
+				PreparedStatement pstmt = con.prepareStatement(sqlInsert);
+	        	 
+		        	pstmt.setInt(1, id);
+		        	pstmt.setString(2, array[0]);
+		        	pstmt.setString(3, array[1]);
+		        	pstmt.setDouble(4, Double.valueOf(array[2]));
+		        	pstmt.executeUpdate();	        		
+	        }
+	       
+		} catch (Exception e) {
+			System.out.println(e);
+		}		
+		System.out.println("cleanData() done!!!");
+		UpdateDBAgain();
+		finishLinkTable(contextid,interaction_type,habitat_1,habitat_2);
+		return true;
+	}
+	
+	public static void UpdateDBAgain() throws SQLException, IOException {
+		try {
+			Connection conn=DBConnection.getDBConnection();
+			Statement statement=null;
+			String sql="";
+			statement = conn.createStatement();
+		
+			sql="update name set entity_1_name=n1";
+			statement.executeUpdate(sql);
+			
+			sql="update name set entity_2_name=n2";
+			statement.executeUpdate(sql);
+	
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		System.out.println("UpdateDBAgain() done!!!");	
+	}	
+	
+	public static void mergeAll(String contextid) {
+		try {
+			Connection conn=DBConnection.getDBConnection();
+			Statement statement=null;
+			String sql="";
+			statement = conn.createStatement();
+			sql="DROP TABLE IF EXISTS tempAll";
+			statement.executeUpdate(sql);
+		
+			sql="create table tempAll as (select * from mind_links"
+					+ " union all"
+					+ " select * from links_"+contextid+")";
+			
+			statement.executeUpdate(sql);
+			
+			sql="delete from mind_links";
+			statement.executeUpdate(sql);	
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		System.out.println("mergeAll() done!!!");
+	}
 }
