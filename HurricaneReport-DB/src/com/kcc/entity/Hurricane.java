@@ -1,30 +1,28 @@
 package com.kcc.entity;
 
 public class Hurricane {
-	
+	int H_id;
 	String H_day;
 	String H_time;
 	String H_identifier;
+	String H_status;
 	String H_latitude;
 	String H_longitude;
 	int H_max_speed;
+	int H_min_pressure;
+	String C_number;
 	
 	public Hurricane() {
 		
 	}
 	
-	public Hurricane(String h_day, String h_time, String h_identifier, String h_latitude,
-			String h_longitude, int h_max_speed) {
-		
-		super();
-		H_day = h_day;
-		H_time = h_time;
-		H_identifier = h_identifier;
-		H_latitude = h_latitude;
-		H_longitude = h_longitude;
-		H_max_speed = h_max_speed;
+	public int getH_id() {
+		return H_id;
 	}
 
+	public void setH_id(int h_id) {
+		H_id = h_id;
+	}
 
 	public String getH_day() {
 		return H_day;
@@ -50,6 +48,14 @@ public class Hurricane {
 		H_identifier = h_identifier;
 	}
 
+	public String getH_status() {
+		return H_status;
+	}
+
+	public void setH_status(String h_status) {
+		H_status = h_status;
+	}
+
 	public String getH_latitude() {
 		return H_latitude;
 	}
@@ -72,5 +78,21 @@ public class Hurricane {
 
 	public void setH_max_speed(int h_max_speed) {
 		H_max_speed = h_max_speed;
+	}
+
+	public int getH_min_pressure() {
+		return H_min_pressure;
+	}
+
+	public void setH_min_pressure(int h_min_pressure) {
+		H_min_pressure = h_min_pressure;
+	}
+
+	public String getC_number() {
+		return C_number;
+	}
+
+	public void setC_number(String c_number) {
+		C_number = c_number;
 	}
 }

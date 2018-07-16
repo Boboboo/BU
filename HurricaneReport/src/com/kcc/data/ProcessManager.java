@@ -2,16 +2,12 @@ package com.kcc.data;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,69 +18,108 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.kcc.db.DBConnection;
+import com.kcc.entity.Cyclone;
 import com.kcc.entity.Hurricane;
+import com.kcc.entity.FloridaReport;
 
 public class ProcessManager {
 	
-	public void progress() {
-		ArrayList<Hurricane> allLandFalls = getAllLandFalls();
-		//System.out.println(allLandFalls.size()+"  ---list");
-		Map<String, String> floridaMap = getAllFlorida(allLandFalls);
-		//System.out.println(floridaMap.size()+"  ---map");
-		getReport(floridaMap);
+	Map<Cyclone,ArrayList<Hurricane>> mLandFallsMap=new HashMap<>();
+	
+	public void progress() throws Exception {
+		readAllData("/Users/air/Desktop/data.txt");
+		getAllFloridas();
+		
 	}
 	
-	private ArrayList<Hurricane> getAllLandFalls(){
-		ArrayList<Hurricane> landFallsList=new ArrayList<>();
-		Hurricane hurricane=null;
-
-		try {
-			DBConnection DBconn=new DBConnection();
-			Connection conn=DBconn.getDBConnection();
-	  	    Statement statement=null;
-	  	    ResultSet resultSet=null;
-	  		statement = conn.createStatement();
-		    String sql="SELECT * FROM hurricane where h_identifier='L';";
-			resultSet = statement.executeQuery(sql);
-			
-			while (resultSet.next()) {
-					hurricane=new Hurricane();
-	    	      		hurricane.setH_day(resultSet.getString("H_day"));
-	    	      		hurricane.setH_time(resultSet.getString("H_time"));
-	    	      		hurricane.setH_identifier(resultSet.getString("H_identifier"));
-	    	      		hurricane.setH_latitude(resultSet.getString("H_latitude"));
-	    	      		hurricane.setH_longitude(resultSet.getString("H_longitude"));
-	    	      		hurricane.setH_max_speed(resultSet.getInt("H_max_speed"));
-	    	      		hurricane.setC_number(resultSet.getString("C_number"));
-	    	      		landFallsList.add(hurricane);
-			}
+	public void readAllData(String path)  throws Exception {  
+		
+		 System.out.println("readData path:"+path);
+		 ArrayList<Hurricane> hurricaneList=null;
+		 int C_number=0;
+		 String C_id=null, C_name=null;
+		
+		 int H_max_speed=0;
+		 String H_day=null, H_time=null,H_identifier=null,H_latitude=null,H_longitude=null;
+			 
+		 FileInputStream fstream = new FileInputStream(path);
+		 BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
+		 String strLine;
+		 
+		 try {
+			 while ((strLine = br.readLine()) != null)   {
+				Cyclone cyclone=null;
+				
+				if(strLine.startsWith("AL")) {
+					hurricaneList=new ArrayList<>();
+					
+					String[] headerArray=strLine.split(",");
+					C_id=headerArray[0].trim();
+					C_name=headerArray[1].trim();
+					C_number=Integer.valueOf(headerArray[2].trim());
+					cyclone=new Cyclone(C_id, C_name, C_number);		
+				}else {
+					Hurricane hurricane=null;
+					String[] detailsArray=strLine.split(",");
+					H_day=detailsArray[0].trim();
+					H_time=detailsArray[1].trim();
+					H_identifier=detailsArray[2].trim();
+					H_latitude=detailsArray[4].trim();
+					H_longitude=detailsArray[5].trim();
+					H_max_speed=Integer.valueOf(detailsArray[6].trim());	
+					
+					if(H_identifier!=null && H_identifier.length()!=0 && H_identifier.equals("L")) {
+						hurricane=new Hurricane(H_day, H_time, H_identifier,H_latitude, H_longitude, H_max_speed);			
+						hurricaneList.add(hurricane);
+					}				
+				}
+				if(cyclone!=null) {
+					mLandFallsMap.put(cyclone,hurricaneList);	
+				}
+	        }
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		return landFallsList;
+//		 for(Cyclone c:mLandFallsMap.keySet()) {
+//			 System.out.println(mLandFallsMap.get(c).size()    +"\r\n");
+//		 }
+//		System.out.println(mLandFallsMap.size()+"***");
+	    br.close(); 
+//	    return totalMap;
 	}
 	
-	private Map<String, String> getAllFlorida(ArrayList<Hurricane> landFallsList) {	
-		Map<String, String> floridaMap=new HashMap<>();
-		String output;
-		
-		if(landFallsList==null || landFallsList.size()==0) {
-			return null;
-		}
-		
-		for(Hurricane h:landFallsList) {
-			String outResult="";
-			String day=h.getH_day();
-			String time=h.getH_time();
-			String lat=h.getH_latitude().substring(0, h.getH_latitude().length()-1);
-			String log="-"+h.getH_longitude().substring(0, h.getH_longitude().length()-1);
-			String C_number=h.getC_number();
-			int max_speed=h.getH_max_speed();
-			String resultString=null;
+	
+	//get all Florida from all identifier equal 'L'
+	private void getAllFloridas () {
+		for(Cyclone cyclone: mLandFallsMap.keySet()) {
+			ArrayList<Hurricane> eachList=mLandFallsMap.get(cyclone);
 			
-			// Reverse geocoding request and response (address lookup)
+			if(eachList!=null && eachList.size()!=0) {
+				for(Hurricane h:eachList) {
+					//FloridaReport floridaReport;
+					String lat=h.getH_latitude().substring(0, h.getH_latitude().length()-1);
+					String log="-"+h.getH_longitude().substring(0, h.getH_longitude().length()-1);
+					String day=h.getH_day();
+					String time=h.getH_time();
+					int max_speed=h.getH_max_speed();
+				
+					boolean isFlorida=callAPI(lat,log);
+					if(isFlorida) {
+						String name=cyclone.getC_name();
+						Date date=formatDate(day,time);
+						//floridaReport=new FloridaReport(name, date, max_speed);
+						writeUsingFileWriter(name+","+date+","+max_speed+"\r\n") ;
+					}
+				}
+			}		
+		}		
+	}
+		
+		
+	private boolean callAPI(String lat,String log) {	
+			String outResult="";
+			String output;
+			String resultString=null;
 			try {
 		        URL url = new URL("https://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+log+"&result_type=administrative_area_level_1&key=");
 		        
@@ -93,8 +128,7 @@ public class ProcessManager {
 		        conn.setRequestMethod("GET");
 		        conn.setRequestProperty("Accept", "application/json");
 		        if (conn.getResponseCode() != 200) {
-		            throw new RuntimeException("Failed : HTTP error code : "+ conn.getResponseCode());
-		            
+		            throw new RuntimeException("Failed : HTTP error code : "+ conn.getResponseCode());    
 		        }
 		
 		        // Reading data from url
@@ -105,11 +139,10 @@ public class ProcessManager {
 		        
 		        System.out.println(outResult);	        
 		        // parse the json format results after calling google maps api
-		        resultString=parseApiResults(outResult,day,time,lat,log,C_number,max_speed);
+		        resultString=parseApiResults(outResult,lat,log);
 		        
-		        if(resultString!=null &&  resultString.length()!=0) {
-		        		String[] array=resultString.split("\t");
-		        		floridaMap.put(array[0],array[1]);  		
+		        if(resultString!=null &&  resultString.equals("Florida, USA")) {
+		        		 return true;
 		        }
 		        
 		        // disconnecting HttpURLConnection
@@ -117,15 +150,13 @@ public class ProcessManager {
 		    } catch (Exception e) {
 		        e.printStackTrace();
 		    }
-		}
-
-		return floridaMap;
+			return false;
 	}
 	
-	
+
 	// Converting Json formatted string into JSON object 
     // and all results contained 'Florida, USA' in a HashMap 
-	private String parseApiResults(String outResult,String day,String time,String lat,String log,String C_number,int max_speed) throws JSONException {
+	private String parseApiResults(String outResult,String lat,String log) throws JSONException {
 		String resultString=null;
 		String formatted_address = null;	
 		JSONObject json;
@@ -136,48 +167,19 @@ public class ProcessManager {
         results=json.getJSONArray("results");
         status=json.getString("status");
         
-        
         if(status.equals("ZERO_RESULTS")) {
         		return null;
         }
         	   
 	    if(status.equals("OK")) {
     			formatted_address=results.getJSONObject(0).getString("formatted_address");
-    			//TODO: Replace with StringBuilder
     			if(formatted_address!=null && formatted_address.equals("Florida, USA")) {
-    				resultString=day+","+time+","+lat+","+log+","+String.valueOf(max_speed)+"\t"+C_number;	
+    				resultString=formatted_address;
      		}
 	    	}
 		return resultString;
 	}
-	
-	private void getReport(Map<String, String> floridaMap) {
-		String reportRow=null;
-		String name=null;
-		
-		if(floridaMap==null || floridaMap.size()==0) {
-			return;
-		}
-			
-		for(String key:floridaMap.keySet()) {
-			String[] array=key.split(",");
-			String day=array[0];
-			String time=array[1];
-			int max_speed=Integer.valueOf(array[4]);
-			String C_number=floridaMap.get(key);
 
-			//format date 
-			Date date=formatDate(day,time);
-			
-			//query cyclone number from table cycloone according to the cyclone number, ex.'AL031994'
-			name=queryName(C_number.toUpperCase()); 
-			
-			//write all report record into report.txt file
-			reportRow=name+","+date+","+max_speed;
-			writeUsingFileWriter(reportRow+"\r\n") ;				
-		}	
-	}
-	
 	
 	private Date formatDate(String day, String time) {
 		String y=(day+time).substring(0, 4);
@@ -193,30 +195,6 @@ public class ProcessManager {
 		}
 		return date;
 	}
-	
-	
-	private String queryName(String C_number) {
-		 DBConnection DBconn=new DBConnection();
-		 Connection conn=DBconn.getDBConnection();
-		 Statement statement=null;
-		 ResultSet resultSet=null;
-		 String sql="";
-		 String name=null;
-	
-		 try {
-		        statement = conn.createStatement();
-		        sql="SELECT * FROM cyclone WHERE c_number='"+C_number+"';";
-		        resultSet = statement.executeQuery(sql);
-		        while (resultSet.next()) {
-	        	 	   name=resultSet.getString("c_name"); 
-		        }     	       	             
-		        DBconn.cleanConnection(null,statement,conn);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return name;    
-	}
-
 
 	private void writeUsingFileWriter(String data) {
         File file = new File("/Users/air/Desktop/report.txt");
