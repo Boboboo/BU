@@ -225,7 +225,7 @@ public class ProcessManager {
 			
 			//Reverse geocoding request and response (state lookup)
 			try {
-		        URL url = new URL("https://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+log+"&result_type=administrative_area_level_1&key=AIzaSyCXzfnNXehWQcMstZNgvhnTveHJUvSugKM");
+		        URL url = new URL("https://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+log+"&result_type=administrative_area_level_1&key=");
 		        
 		        // making connection
 		        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
