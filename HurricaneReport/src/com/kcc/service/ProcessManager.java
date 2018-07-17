@@ -31,7 +31,7 @@ public class ProcessManager {
      * Define the global mOutputList to contain all the outputReport
      */
 	Map<Cyclone,ArrayList<Hurricane>> mLandFallsMap=new HashMap<>();
-	ArrayList<OutputReport> mOutputList=new ArrayList<>();
+	ArrayList<OutputReport> mOutputList=new ArrayList<>();	
 	
 	
 	/**
@@ -87,6 +87,7 @@ public class ProcessManager {
 	
 	/**
      * Read data set from file and write data in a mLandFallsMap
+     * @param path file path
      */
 	private void readAllData(String path)  throws Exception {  
 		
@@ -167,11 +168,19 @@ public class ProcessManager {
      */
 	private void filterAllFloridas () {
 		
+		int progress=0;
+		System.out.print("Processing--------------------- ");
+		
 		//traverse each key for the mLandFallsMap
 		for(Cyclone cyclone: mLandFallsMap.keySet()) {
 			
 			//get each hurricane list mapping each cyclone
 			ArrayList<Hurricane> eachList=mLandFallsMap.get(cyclone);
+			
+			//calculate current progress, and show the filter progress, EX '56%'
+			progress++;
+			int readbleProgress= (int) (100 * (progress*1.0f/mLandFallsMap.size()));
+			processing(readbleProgress);
 			
 			//check to only deal with the hurricane lists they have hurricanes 
 			if(eachList!=null && eachList.size()!=0) {
@@ -205,12 +214,13 @@ public class ProcessManager {
 						outputReport=new OutputReport(name, date, max_speed);
 						
 						//put all the outputReport in the mOutputList
-						mOutputList.add(outputReport);	
+						mOutputList.add(outputReport);
+						
 					}
 				}
 			}		
 		}
-		System.out.println("The filterAllFloridas()  finshed, there are " + mOutputList.size() +" in total.");
+		System.out.println("There are " + mOutputList.size() +" results in total.");
 	}
 	
 	
@@ -225,7 +235,7 @@ public class ProcessManager {
 			
 			//Reverse geocoding request and response (state lookup)
 			try {
-		        URL url = new URL("https://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+log+"&result_type=administrative_area_level_1&key=");
+		        URL url = new URL("https://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+log+"&result_type=administrative_area_level_1&key=AIzaSyB5-DgA2_xkrmy56id9LnHyOZzxZTJHQqY");
 		        
 		        // making connection
 		        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -356,4 +366,22 @@ public class ProcessManager {
 			System.out.println("Cannot find the file report.txt. Please try again.");
 		}
     }
+	
+	
+	/**
+	 * Print progress in the terminal
+	 * @param i current progress
+	 */
+	private void processing(int i) {
+			if(i < 10){
+				System.out.print(i + "%");
+				System.out.print("\b\b");
+			}else if(i >= 10 && i <= 99){
+				System.out.print(i + "%");
+				System.out.print("\b\b\b");
+			}else{
+				System.out.println(i + "%");
+				System.out.print("Done!! ");
+			}
+	}
 }
