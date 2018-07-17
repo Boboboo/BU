@@ -1,5 +1,9 @@
 package com.kcc.entity;
 
+
+/**
+ * Hurricane class
+ */
 public class Hurricane {
 	
 	String H_day;

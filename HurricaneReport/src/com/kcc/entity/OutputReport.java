@@ -2,13 +2,12 @@ package com.kcc.entity;
 
 import java.util.Date;
 
-public class FloridaReport {
-	
+public class OutputReport {
 	String name;
 	Date date;
 	int max_speed;
 	
-	public FloridaReport(String name, Date date, int max_speed) {
+	public OutputReport(String name, Date date, int max_speed) {
 		super();
 		this.name = name;
 		this.date = date;
@@ -38,5 +37,5 @@ public class FloridaReport {
 	public void setMax_speed(int max_speed) {
 		this.max_speed = max_speed;
 	}
-	
+
 }

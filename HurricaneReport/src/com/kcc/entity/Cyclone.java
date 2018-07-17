@@ -1,5 +1,9 @@
 package com.kcc.entity;
 
+
+/**
+ * Cyclone class
+ */
 public class Cyclone {
 	 
 	String C_id=null;
