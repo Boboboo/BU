@@ -15,8 +15,8 @@ For HurricaneReport :
   
   
 For HurricaneReport-DB :
-java -jar reportDb.jar init /Users/air/Desktop/data.txt
-java -jar reportDb.jar create /Users/air/Desktop
+1. java -jar reportDb.jar init /Users/air/Desktop/data.txt
+2. java -jar reportDb.jar create /Users/air/Desktop
  
 
 
