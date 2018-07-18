@@ -1,7 +1,7 @@
 The whole project can not be public, but here are some basic templates and sometimes they can be used for convenience.
 
 
-For HurricaneReport Project
+For HurricaneReport :
 1. create a HurricaneReport.jar with external libraries included in Eclipse.
    a. Right mouse on project -> Export -> Runnable jar 
    b. Choose Launch conifg and export destination
@@ -11,6 +11,12 @@ For HurricaneReport Project
 2. HurricaneReport.jar :
   direct to the path for the HurricaneReport.jar
   java -jar HurricaneReport.jar
+  
+  
+  
+For HurricaneReport-DB :
+java -jar reportDb.jar init /Users/air/Desktop/data.txt
+java -jar reportDb.jar create /Users/air/Desktop
  
 
 
