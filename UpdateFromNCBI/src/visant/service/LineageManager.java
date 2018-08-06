@@ -15,7 +15,8 @@ import visant.db.DBConnection;
 import visant.entity.NodeEntity;
 
 public class LineageManager {
-	private ArrayList<NodeEntity> mResultList=new ArrayList<>();
+	private Map<Integer,NodeEntity> mResultMap=new HashMap<>();
+	private Map<String,String> mLineageMap=new HashMap<>();
 	
 	//update mind_nodes_all table
 	public void updateProcess() {
@@ -23,7 +24,8 @@ public class LineageManager {
 //		manager.initailTable("mind_nodes_all");
 //		updateMind_Nodes_All();	
 //		UpdateRank();
-		getAllNodesNoDepulicatesTaxid();
+//		getAllNodesNoDepulicatesTaxid();
+		getAllLineageNumber();
 	}
 	
 	
@@ -112,7 +114,7 @@ public class LineageManager {
 	
 	
 	//create only one table from table mind_nodes_all according to the priority
-	private ArrayList<NodeEntity> getAllNodesNoDepulicatesTaxid() {
+	private Map<Integer,NodeEntity> getAllNodesNoDepulicatesTaxid() {
 			  DBConnection DBconn=new DBConnection();
 			  Connection conn=DBconn.getDBConnection();
 			  String sql="";
@@ -181,13 +183,133 @@ public class LineageManager {
 	    	        			}
 	    	        			else if(oneMap.get("synonym")!=null) {
 	    	        				resultEntity=oneMap.get("synonym");
-	    	        			}		        					
-     					mResultList.add(resultEntity);
+	    	        			}
+     					
+     					if(!mResultMap.containsKey(resultEntity.getTaxid())) {
+     						mResultMap.put(resultEntity.getTaxid(),resultEntity);
+     					}	
 	        			}	
-		      } catch(SQLException e) {
-		         System.out.println("SQL exception occured" + e);
+		      } catch(Exception e) {
+		         e.printStackTrace();
 		      }
-		      System.out.println(mResultList.size()); 
-		      return mResultList;	     
+		     // System.out.println(mResultMap.size()); 
+		      return mResultMap;	     
 	   }
+	
+	
+	public Map<String, String> getAllLineageNumber(){
+		  DBConnection DBconn=new DBConnection();
+		  Connection conn=DBconn.getDBConnection();
+		  String sql="";
+		  
+	      String taxid=null;
+		  String parent_taxid=null;
+		  String rank;
+		  Map<String,String> tempMap= new HashMap<>(); 
+		 
+	      try {
+		     Statement statement = conn.createStatement();
+	         ResultSet res = statement.executeQuery("SELECT * FROM original_nodes");
+	          
+	         while (res.next()) {
+      	        taxid=String.valueOf(res.getInt("taxid"));
+      	        parent_taxid=String.valueOf(res.getString("parent_taxid"));
+      	        rank=res.getString("rank");
+      	        
+      	        if(!tempMap.containsKey(taxid)) {
+      	        		tempMap.put(taxid, parent_taxid); 
+      	        }
+	         }
+
+	         for(String key : tempMap.keySet()) {
+	        	 	String orig_lineage="";
+	        	 	String keyCopy=key;
+	        	 	
+	        	 	if(tempMap.get(key).equals("1")) {
+	        	 		mLineageMap.put(keyCopy, "1");
+	        	 		continue;
+	        	 	}	
+	        	 	while(!tempMap.get(key).equals("1")) {
+	        	 		orig_lineage+=tempMap.get(key)+"||";
+	        	 		key=tempMap.get(key);
+	        	 	}
+	        	 	orig_lineage+="1";
+	        	 	
+	        	 	//write all the lineage number to newMap memory
+	        	 	mLineageMap.put(keyCopy, keyCopy+"||"+orig_lineage);
+	          }
+	       }catch(Exception e) {
+	    	   		e.printStackTrace();
+		   }
+//	       for(String s:mLineageMap.keySet()) {
+//	    	   		System.out.println(mLineageMap.get(s));
+//	       }
+	       return mLineageMap; 
+     }
+	
+//	 public void getResult() {
+//		     DBConnection DBconn=new DBConnection();
+//			 Connection conn=DBconn.getDBConnection();
+//			 Statement statement=null;
+//			 ResultSet result=null;
+//			 
+//	         //get mind lineage number format from newMap memory
+//	         for(String key : mLineageMap.keySet()) {
+//				String temp[]=mLineageMap.get(key).split("\\|\\|");
+//	        	    String resultList="";
+//	        	    for(int i=0;i<temp.length;i++) {
+//		        	    	for(Integer taxid : mResultMap.keySet()) {
+//		        	    		if(Integer.valueOf(temp[i])==taxid) {
+//		        	    			resultList+=String.valueOf(taxid)+"*"+mResultMap.get(taxid)
+//		        	    		}
+//		        	    		=
+//		        	    }
+//	        	    }
+//	         }        
+//	     }
+	 
+//	 public void getResult() {
+//	     DBConnection DBconn=new DBConnection();
+//		 Connection conn=DBconn.getDBConnection();
+//		 Statement statement=null;
+//		 ResultSet result=null;
+//         //get mind lineage number format from newMap memory
+//         String taxid1=null;
+//		 String lineage1=null;
+//		  
+//		 String taxidCom1=null;
+//		 String name1=null;
+//		 String type1 = null;
+//		 String rank1=null;
+//         
+//         for(String key : mLineageMap.keySet()) {
+//	        taxid1=key;
+//        	    String temp[]=mLineageMap.get(key).split("\\|\\|");
+//        	    String nameList="";
+//        	    String nameResult=null;
+//	       
+//    	         for(int i=0;i<temp.length;i++) {
+//    	        	      try {
+//    	        	         	statement  = conn.createStatement();
+//		    	        		String sql="SELECT * FROM mind_unique where taxid='"+temp[i]+"'";
+//		    	        		result = statement.executeQuery(sql);
+//		    	        		
+//	  	        			Map<String, String> resultMap=new HashMap<>();
+//		    	        		
+//	  	        			while (result.next()) {
+//							taxidCom1=result.getString("taxid");	
+//		    	 	      	    name1=result.getString("name");
+//		    	 	      	    type1=result.getString("type");
+//		    	 	      	    rank1=result.getString("rank");  
+//		    	        		}
+//	  	        			//nameList+=resultName+"["+resultTaxid+"]"+"||";
+//	  	        			nameList+=taxidCom1+"*"+name1+"*"+type1+"*"+rank1+"||";
+//	  	        			nameResult=nameList.substring(0, nameList.length()-2);		
+//    	        	      } catch (Exception e) {
+//    	        	    	  		e.printStackTrace();	
+//				  }	 		
+//    	         }
+//         }
+//     }
+	    
 }
