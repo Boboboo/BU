@@ -3,12 +3,10 @@ package visant.service;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileWriter;
-import java.io.IOException;
+
 import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Scanner;
@@ -26,23 +24,24 @@ public class ProcessManager {
 //		if(nodesFilePath!=null) {
 //			readNodesData(nodesFilePath);	
 //		}
-//		System.out.println("(1/3)Update table mind_original_nodes successfully.");
+//		System.out.println("(1/4)Update table mind_original_nodes successfully.");
 		
 		//update mind_original_names table
-		System.out.println("Please input the path of names.dmp. Example /Users/air/Desktop/names.txt");
-		String namesFilePath=getFilePath(NamesFile);
-		if(namesFilePath!=null) {
-			readNamesData(namesFilePath);	
-		}
-		System.out.println("(2/3)Update table mind_original_names successfully.");
+//		System.out.println("Please input the path of names.dmp. Example /Users/air/Desktop/names.txt");
+//		String namesFilePath=getFilePath(NamesFile);
+//		if(namesFilePath!=null) {
+//			readNamesData(namesFilePath);	
+//		}
+//		System.out.println("(2/4)Update table mind_original_names successfully.");
 		
 		//update mind_lineage table	
+		LineageManager lineageManager=new LineageManager();
+		lineageManager.updateProcess();
+		System.out.println("(3/4)Update table mind_nodes_all successfully.");
 	}
 	
 	
-	private String getFilePath(String fileName) {
-		//System.out.println("Please input the path of nodes.dmp. Example /Users/air/Desktop");
-		
+	private String getFilePath(String fileName) {		
 		Scanner scanner =new Scanner(System.in);      
 		String inputPath="";
 		File file;
@@ -117,7 +116,8 @@ public class ProcessManager {
 				 taxid=Integer.valueOf(array[0].trim());
 				 name=array[1].trim();
 				 unique_name=array[2].trim();
-				 type=array[3].trim();
+				 type=array[3].substring(0, array[3].length()-1).trim();
+				
 				 insertEachRowToNames(DBconn,conn,id, name, type, taxid,unique_name);
 			 }
 		} catch (Exception e) {
@@ -159,7 +159,7 @@ public class ProcessManager {
 	}
 	
 	
-	private void initailTable(String tableName) {	
+	public void initailTable(String tableName) {	
 		DBConnection DBconn=new DBConnection();
 		Connection conn=DBconn.getDBConnection();
 		Statement statement=null;
@@ -174,25 +174,6 @@ public class ProcessManager {
 			e.printStackTrace();
 		}
 	}
-	
-	
-	private  void writeUsingFileWriter(String data,String path) {
-        File file = new File(path+"result.txt");
-        FileWriter fr = null;
-        try {
-            fr = new FileWriter(file,true);
-            fr.write(data);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }finally{
-            try {
-                fr.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }	
-	
 	
 
 }
