@@ -19,28 +19,26 @@ public class MainManager {
 	
 	public void progress() throws Exception {
 		//update mind_original_nodes table
-//		System.out.println("Please input the path of nodes.dmp. Example /Users/air/Desktop/nodes.txt");
-//		String nodesFilePath=getFilePath(NodesFile);
-//		System.out.println("Loading the first process...");
-//		if(nodesFilePath!=null) {
-//			readNodesData(nodesFilePath);	
-//		}
-//		System.out.println("(1/4)Update table mind_original_nodes successfully.");
+		System.out.println("Please input the path of nodes.dmp. Example /Users/air/Desktop/nodes.txt");
+		String nodesFilePath=getFilePath(NodesFile);
+		System.out.println("Loading the first process...");
+		if(nodesFilePath!=null) {
+			readNodesData(nodesFilePath);	
+		}
+		System.out.println("(1/4)Update table mind_original_nodes successfully.");
 		
 		//update mind_original_names table
-//		System.out.println("Please input the path of names.dmp. Example /Users/air/Desktop/names.txt");
-//		String namesFilePath=getFilePath(NamesFile);
-//		System.out.println("Loading the second process...");
-//		if(namesFilePath!=null) {
-//			readNamesData(namesFilePath);	
-//		}
-//		System.out.println("(2/4)Update table mind_original_names successfully.");
+		System.out.println("Please input the path of names.dmp. Example /Users/air/Desktop/names.txt");
+		String namesFilePath=getFilePath(NamesFile);
+		System.out.println("Loading the second process...");
+		if(namesFilePath!=null) {
+			readNamesData(namesFilePath);	
+		}
+		System.out.println("(2/4)Update table mind_original_names successfully.");
 		
-		//update mind_lineage table	
+		//update mind_nodes_all table and  mind_lineage table	
 		LineageManager lineageManager=new LineageManager();
-		lineageManager.lineageProgress();
-		
-		System.out.println("All related tables have been successfully updated!!!");
+		lineageManager.lineageProgress();			
 	}
 	
 	

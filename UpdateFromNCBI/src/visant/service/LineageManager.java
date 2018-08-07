@@ -19,14 +19,14 @@ public class LineageManager {
 	private Map<Integer,NodeEntity> mResultMap=new HashMap<>();
 	private Map<Integer,String> mLineageMap=new HashMap<>();
 	
-	//update table mind_nodes_all and table mind_lineage 
+	//update mind_nodes_all table and  mind_lineage table
 	public void lineageProgress() {
 		MainManager manager = new MainManager();
-//		manager.initailTable("mind_nodes_all");
-//		System.out.println("Loading the third process...");
-//		updateMind_Nodes_All();	
-//		UpdateRank();
-//		System.out.println("(3/4)Update table mind_nodes_all successfully.");
+		manager.initailTable("mind_nodes_all");
+		System.out.println("Loading the third process...");
+		updateMind_Nodes_All();	
+		UpdateRank();
+		System.out.println("(3/4)Update table mind_nodes_all successfully.");
 		
 		
 		manager.initailTable("mind_lineage");
