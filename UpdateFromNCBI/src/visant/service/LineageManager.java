@@ -19,22 +19,23 @@ public class LineageManager {
 	private Map<Integer,NodeEntity> mResultMap=new HashMap<>();
 	private Map<Integer,String> mLineageMap=new HashMap<>();
 	
-	//update mind_nodes_all table and  mind_lineage table
-	public void lineageProgress() {
+	public void lineageProgress() {	
 		MainManager manager = new MainManager();
+		
+		//update mind_nodes_all table
 		manager.initailTable("mind_nodes_all");
 		System.out.println("Loading the third process...");
 		updateMind_Nodes_All();	
-		UpdateRank();
+		updateRank();
 		System.out.println("(3/4)Update table mind_nodes_all successfully.");
 		
-		
+		//update mind_lineage table
 		manager.initailTable("mind_lineage");
 		System.out.println("Loading the forth process...");
 		mResultMap=getAllNodesNoDepulicateTaxid();
 		mLineageMap=getAllLineageNumber();
-		getResult();
-		System.out.println("(4/4)Update table mind_nodes_all successfully.");
+		getLineageResult();
+		System.out.println("(4/4)Update table mind_lineage successfully.");
 	}
 	
 	
@@ -105,7 +106,7 @@ public class LineageManager {
 		}
 	}
 	
-	public static void UpdateRank(){
+	private void updateRank(){
 		DBConnection DBconn=new DBConnection();
 		Connection conn=DBconn.getDBConnection();
 		Statement statement=null;
@@ -116,9 +117,9 @@ public class LineageManager {
 			sql="update mind_nodes_all set rank=original_nodes.rank from original_nodes "
 			   +"where original_nodes.taxid=mind_nodes_all.taxid";
 			statement.executeUpdate(sql);
-		} catch (Exception e) {
-			System.out.println(e);	
-		}
+		} catch(Exception e) {
+	         e.printStackTrace();
+	    }
 	}
 	
 	
@@ -249,18 +250,15 @@ public class LineageManager {
 					mLineageMap.put(keyCopy, orig_lineage);
 				}	
 			  }
-	       }catch(SQLException e) {
-		         System.out.println("SQL exception occured" + e);
-		}
-//	    for(Integer str:mLineageMap.keySet()) {
-//	    		System.out.println(mLineageMap.get(str));
-//	    }
+	       }catch(Exception e) {
+		         e.printStackTrace();
+		   }
 //	    System.out.println(mLineageMap.size());
 	    return mLineageMap; 
 	 }
 
 	
-	 private void getResult() {
+	 private void getLineageResult() {
 		     DBConnection DBconn=new DBConnection();
 			 Connection conn=DBconn.getDBConnection();
 			 Statement statement=null;
@@ -279,9 +277,9 @@ public class LineageManager {
 					}	
 					resultList+=oneList; 
 	        	    }
-				
+				resultList=resultList.substring(0, resultList.length()-2);
 				System.out.println(key+"---"+resultList);
-				insertLineageResult(DBconn,conn,key,resultList.substring(0, resultList.length()-2)) ;
+				insertLineageResult(DBconn,conn,key,resultList) ;
 	         }        
 	  }
 	 
@@ -297,6 +295,6 @@ public class LineageManager {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-		}
+	}
 	    
 }
