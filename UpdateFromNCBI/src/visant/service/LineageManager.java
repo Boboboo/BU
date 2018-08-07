@@ -1,7 +1,7 @@
 package visant.service;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,17 +15,26 @@ import visant.db.DBConnection;
 import visant.entity.NodeEntity;
 
 public class LineageManager {
-	private Map<Integer,NodeEntity> mResultMap=new HashMap<>();
-	private Map<String,String> mLineageMap=new HashMap<>();
 	
-	//update mind_nodes_all table
-	public void updateProcess() {
-//		ProcessManager manager = new ProcessManager();
+	private Map<Integer,NodeEntity> mResultMap=new HashMap<>();
+	private Map<Integer,String> mLineageMap=new HashMap<>();
+	
+	//update table mind_nodes_all and table mind_lineage 
+	public void lineageProgress() {
+		MainManager manager = new MainManager();
 //		manager.initailTable("mind_nodes_all");
+//		System.out.println("Loading the third process...");
 //		updateMind_Nodes_All();	
 //		UpdateRank();
-//		getAllNodesNoDepulicatesTaxid();
-		getAllLineageNumber();
+//		System.out.println("(3/4)Update table mind_nodes_all successfully.");
+		
+		
+		manager.initailTable("mind_lineage");
+		System.out.println("Loading the forth process...");
+		mResultMap=getAllNodesNoDepulicateTaxid();
+		mLineageMap=getAllLineageNumber();
+		getResult();
+		System.out.println("(4/4)Update table mind_nodes_all successfully.");
 	}
 	
 	
@@ -114,7 +123,7 @@ public class LineageManager {
 	
 	
 	//create only one table from table mind_nodes_all according to the priority
-	private Map<Integer,NodeEntity> getAllNodesNoDepulicatesTaxid() {
+	private Map<Integer,NodeEntity> getAllNodesNoDepulicateTaxid() {
 			  DBConnection DBconn=new DBConnection();
 			  Connection conn=DBconn.getDBConnection();
 			  String sql="";
@@ -197,119 +206,97 @@ public class LineageManager {
 	   }
 	
 	
-	public Map<String, String> getAllLineageNumber(){
-		  DBConnection DBconn=new DBConnection();
-		  Connection conn=DBconn.getDBConnection();
-		  String sql="";
-		  
-	      String taxid=null;
-		  String parent_taxid=null;
-		  String rank;
-		  Map<String,String> tempMap= new HashMap<>(); 
+	private Map<Integer, String> getAllLineageNumber(){
+		 DBConnection DBconn=new DBConnection();
+		 Connection conn=DBconn.getDBConnection();
+		 String sql="";
 		 
-	      try {
-		     Statement statement = conn.createStatement();
-	         ResultSet res = statement.executeQuery("SELECT * FROM original_nodes");
-	          
-	         while (res.next()) {
-      	        taxid=String.valueOf(res.getInt("taxid"));
-      	        parent_taxid=String.valueOf(res.getString("parent_taxid"));
-      	        rank=res.getString("rank");
-      	        
-      	        if(!tempMap.containsKey(taxid)) {
-      	        		tempMap.put(taxid, parent_taxid); 
-      	        }
-	         }
+	     int taxid=0,parent_taxid=0;
+	     String rank;
 
-	         for(String key : tempMap.keySet()) {
-	        	 	String orig_lineage="";
-	        	 	String keyCopy=key;
-	        	 	
-	        	 	if(tempMap.get(key).equals("1")) {
-	        	 		mLineageMap.put(keyCopy, "1");
-	        	 		continue;
-	        	 	}	
-	        	 	while(!tempMap.get(key).equals("1")) {
-	        	 		orig_lineage+=tempMap.get(key)+"||";
-	        	 		key=tempMap.get(key);
-	        	 	}
-	        	 	orig_lineage+="1";
-	        	 	
-	        	 	//write all the lineage number to newMap memory
-	        	 	mLineageMap.put(keyCopy, keyCopy+"||"+orig_lineage);
-	          }
-	       }catch(Exception e) {
-	    	   		e.printStackTrace();
-		   }
-//	       for(String s:mLineageMap.keySet()) {
-//	    	   		System.out.println(mLineageMap.get(s));
-//	       }
-	       return mLineageMap; 
-     }
+	     try {
+			 Statement statement = conn.createStatement();
+			 ResultSet res = statement.executeQuery("SELECT * FROM original_nodes");
+
+			 Map<Integer,Integer> tempMap= new HashMap<>(); 
+
+			 while (res.next()) {
+				taxid=res.getInt("taxid");
+				parent_taxid=res.getInt("parent_taxid");
+				rank=res.getString("rank");
+
+				if(!tempMap.containsKey(taxid)) {
+					tempMap.put(taxid, parent_taxid); 
+				}
+			 }
+
+			 for(Integer key : tempMap.keySet()) {
+				String orig_lineage="";
+				Integer keyCopy=key;
+
+				if(tempMap.get(key)==1) {
+					mLineageMap.put(keyCopy, "1");
+					continue;
+				}
+				
+				while(tempMap.get(key)!=1) {
+					orig_lineage+=String.valueOf(tempMap.get(key))+"||";
+					key=tempMap.get(key);
+				}
+				orig_lineage+="1";
+				
+				if(!mLineageMap.containsKey(keyCopy)) {
+					mLineageMap.put(keyCopy, orig_lineage);
+				}	
+			  }
+	       }catch(SQLException e) {
+		         System.out.println("SQL exception occured" + e);
+		}
+//	    for(Integer str:mLineageMap.keySet()) {
+//	    		System.out.println(mLineageMap.get(str));
+//	    }
+//	    System.out.println(mLineageMap.size());
+	    return mLineageMap; 
+	 }
+
 	
-//	 public void getResult() {
-//		     DBConnection DBconn=new DBConnection();
-//			 Connection conn=DBconn.getDBConnection();
-//			 Statement statement=null;
-//			 ResultSet result=null;
-//			 
-//	         //get mind lineage number format from newMap memory
-//	         for(String key : mLineageMap.keySet()) {
-//				String temp[]=mLineageMap.get(key).split("\\|\\|");
-//	        	    String resultList="";
-//	        	    for(int i=0;i<temp.length;i++) {
-//		        	    	for(Integer taxid : mResultMap.keySet()) {
-//		        	    		if(Integer.valueOf(temp[i])==taxid) {
-//		        	    			resultList+=String.valueOf(taxid)+"*"+mResultMap.get(taxid)
-//		        	    		}
-//		        	    		=
-//		        	    }
-//	        	    }
-//	         }        
-//	     }
+	 private void getResult() {
+		     DBConnection DBconn=new DBConnection();
+			 Connection conn=DBconn.getDBConnection();
+			 Statement statement=null;
+			 
+	         //get mind lineage number format from mResultMap memory
+	         for(Integer key : mLineageMap.keySet()) {
+				String temp[]=mLineageMap.get(key).split("\\|\\|");
+				
+				String resultList="";
+				String oneList="";
+				for(int i=0;i<temp.length;i++) {
+					NodeEntity nodeEntity=mResultMap.get(Integer.valueOf(temp[i]));
+
+					if(nodeEntity!=null) {
+						oneList=String.valueOf(nodeEntity.getTaxid())+"*"+nodeEntity.getName()+"*"+nodeEntity.getType()+"*"+nodeEntity.getRank()+"||";
+					}	
+					resultList+=oneList; 
+	        	    }
+				
+				System.out.println(key+"---"+resultList);
+				insertLineageResult(DBconn,conn,key,resultList.substring(0, resultList.length()-2)) ;
+	         }        
+	  }
 	 
-//	 public void getResult() {
-//	     DBConnection DBconn=new DBConnection();
-//		 Connection conn=DBconn.getDBConnection();
-//		 Statement statement=null;
-//		 ResultSet result=null;
-//         //get mind lineage number format from newMap memory
-//         String taxid1=null;
-//		 String lineage1=null;
-//		  
-//		 String taxidCom1=null;
-//		 String name1=null;
-//		 String type1 = null;
-//		 String rank1=null;
-//         
-//         for(String key : mLineageMap.keySet()) {
-//	        taxid1=key;
-//        	    String temp[]=mLineageMap.get(key).split("\\|\\|");
-//        	    String nameList="";
-//        	    String nameResult=null;
-//	       
-//    	         for(int i=0;i<temp.length;i++) {
-//    	        	      try {
-//    	        	         	statement  = conn.createStatement();
-//		    	        		String sql="SELECT * FROM mind_unique where taxid='"+temp[i]+"'";
-//		    	        		result = statement.executeQuery(sql);
-//		    	        		
-//	  	        			Map<String, String> resultMap=new HashMap<>();
-//		    	        		
-//	  	        			while (result.next()) {
-//							taxidCom1=result.getString("taxid");	
-//		    	 	      	    name1=result.getString("name");
-//		    	 	      	    type1=result.getString("type");
-//		    	 	      	    rank1=result.getString("rank");  
-//		    	        		}
-//	  	        			//nameList+=resultName+"["+resultTaxid+"]"+"||";
-//	  	        			nameList+=taxidCom1+"*"+name1+"*"+type1+"*"+rank1+"||";
-//	  	        			nameResult=nameList.substring(0, nameList.length()-2);		
-//    	        	      } catch (Exception e) {
-//    	        	    	  		e.printStackTrace();	
-//				  }	 		
-//    	         }
-//         }
-//     }
+	 private void insertLineageResult(DBConnection DBconn,Connection conn,int taxid,String lineage) {
+			String sql="";
+			
+			try {		
+				sql = "INSERT INTO mind_lineage VALUES (?, ?)";
+				PreparedStatement pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1, taxid);
+		        	pstmt.setString(2, lineage);
+		        pstmt.executeUpdate();    		
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 	    
 }

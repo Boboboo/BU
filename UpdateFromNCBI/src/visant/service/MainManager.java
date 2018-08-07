@@ -13,7 +13,7 @@ import java.util.Scanner;
 
 import visant.db.DBConnection;
 
-public class ProcessManager {
+public class MainManager {
 	private final String NodesFile="nodes.txt";
 	private final String NamesFile="names.txt";
 	
@@ -21,6 +21,7 @@ public class ProcessManager {
 		//update mind_original_nodes table
 //		System.out.println("Please input the path of nodes.dmp. Example /Users/air/Desktop/nodes.txt");
 //		String nodesFilePath=getFilePath(NodesFile);
+//		System.out.println("Loading the first process...");
 //		if(nodesFilePath!=null) {
 //			readNodesData(nodesFilePath);	
 //		}
@@ -29,6 +30,7 @@ public class ProcessManager {
 		//update mind_original_names table
 //		System.out.println("Please input the path of names.dmp. Example /Users/air/Desktop/names.txt");
 //		String namesFilePath=getFilePath(NamesFile);
+//		System.out.println("Loading the second process...");
 //		if(namesFilePath!=null) {
 //			readNamesData(namesFilePath);	
 //		}
@@ -36,8 +38,9 @@ public class ProcessManager {
 		
 		//update mind_lineage table	
 		LineageManager lineageManager=new LineageManager();
-		lineageManager.updateProcess();
-		System.out.println("(3/4)Update table mind_nodes_all successfully.");
+		lineageManager.lineageProgress();
+		
+		System.out.println("All related tables have been successfully updated!!!");
 	}
 	
 	
@@ -169,7 +172,6 @@ public class ProcessManager {
 			statement = conn.createStatement();
 			sql = "DELETE FROM "+tableName; 
 			statement.executeUpdate(sql);
-			System.out.println(sql);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

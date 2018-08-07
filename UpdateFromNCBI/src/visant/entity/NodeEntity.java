@@ -12,13 +12,6 @@ public class NodeEntity {
 		super();
 	}
 	
-	public NodeEntity(String name, String type, String rank) {
-		super();		
-		this.name = name;
-		this.type = type;
-		this.rank = rank;
-	}
-	
 	public NodeEntity(int taxid,String name, String type, String rank) {
 		super();
 		this.taxid = taxid;
